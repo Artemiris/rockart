@@ -3,3 +3,15 @@
   margin-bottom: 15px;
   max-width: 50%;
 }
+
+.archsite-item{
+  display: block;
+  border: solid 2px #e1e1e1;
+  padding: 0 15px 15px 15px;
+  margin-bottom: 25px;
+  color: #000;
+  &:hover {
+    text-decoration: none;
+    border: solid 2px #7288e1;
+  }
+}
