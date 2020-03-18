@@ -45,7 +45,11 @@ use mihaildev\ckeditor\CKEditor;
             <?= $form->field($model, 'epoch_id')->dropDownList($epochs, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
             <?= $form->field($model, 'style_id')->dropDownList($styles, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
             <?= $form->field($model, 'public')->checkbox() ?>
-            <?= $form->field($model, 'fileImage')->fileInput() ?>
+            <?= $form->field($model, 'fileImage')->fileInput(), 
+                $form->field($model, 'fileDstr')->fileInput(),
+                $form->field($model, 'fileDraw')->fileInput(),
+                $form->field($model, 'fileReconstr')->fileInput(),
+                $form->field($model, 'fileOverlay')->fileInput() ?>
             <?= $form->field($model, 'index') ?>
             <?= $form->field($model, 'technical_description')->widget(CKEditor::className(),
                 [

@@ -121,6 +121,34 @@ $this->params['breadcrumbs'] = [
                 return empty($model->image) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' . $model->thumbnailImage);
             }
         ],
+        [
+            'attribute' => 'im_dstretch',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_dstretch) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' . $model->thumbnailImDstretch);
+            }
+        ],
+        [
+            'attribute' => 'im_drawing',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_drawing) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' . $model->thumbnailImDrawing);
+            }
+        ],
+        [
+            'attribute' => 'im_reconstruction',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_reconstruction) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' . $model->thumbnailImReconstr);
+            }
+        ],
+        [
+            'attribute' => 'im_overlay',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_overlay) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' . $model->thumbnailImOverlay);
+            }
+        ],
     ],
 ]) ?>
 

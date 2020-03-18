@@ -20,6 +20,10 @@ use Imagine\Image\Box;
  * @property string $lat
  * @property string $lng
  * @property string $image
+ * @property string $im_dstretch
+ * @property string $im_drawing
+ * @property string $im_reconstruction
+ * @property string $im_overlay
  * @property string $orientation_x
  * @property string $orientation_y
  * @property string $orientation_z
@@ -50,6 +54,10 @@ use Imagine\Image\Box;
  * @property PetroglyphThreeD[] $threeD
  * @property Composition[] $compositions
  * @property string $thumbnailImage
+ * @property string $thumbnailImDstretch
+ * @property string $thumbnailImDrawing
+ * @property string $thumbnailImReconstr
+ * @property string $thumbnailImOverlay
  */
 class Petroglyph extends \yii\db\ActiveRecord
 {
@@ -61,6 +69,10 @@ class Petroglyph extends \yii\db\ActiveRecord
     const THUMBNAIL_PREFIX = 'thumbnail_';
 
     public $fileImage;
+    public $fileDstr;
+    public $fileDraw;
+    public $fileReconstr;
+    public $fileOverlay;
 
     /**
      * {@inheritdoc}
@@ -81,13 +93,13 @@ class Petroglyph extends \yii\db\ActiveRecord
             [['lat', 'lng', 'orientation_x', 'orientation_y', 'orientation_z'], 'number'],
             [['method_id', 'culture_id', 'epoch_id', 'deleted', 'public'], 'integer'],
             [['uuid'], 'string', 'max' => 64],
-            [['image'], 'string', 'max' => 255],
+            [['image', 'im_dstretch', 'im_drawing', 'im_reconstruction', 'im_overlay'], 'string', 'max' => 255],
             [['culture_id'], 'exist', 'skipOnError' => true, 'targetClass' => Culture::className(), 'targetAttribute' => ['culture_id' => 'id']],
             [['epoch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Epoch::className(), 'targetAttribute' => ['epoch_id' => 'id']],
             [['method_id'], 'exist', 'skipOnError' => true, 'targetClass' => Method::className(), 'targetAttribute' => ['method_id' => 'id']],
             [['style_id'], 'exist', 'skipOnError' => true, 'targetClass' => Style::className(), 'targetAttribute' => ['style_id' => 'id']],
             [['archsite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Archsite::className(), 'targetAttribute' => ['archsite_id' => 'id']],
-            [['fileImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
+            [['fileImage', 'fileDraw', 'fileReconstr', 'fileOverlay', 'fileDstr'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
         ];
     }
 
@@ -139,7 +151,15 @@ class Petroglyph extends \yii\db\ActiveRecord
             'lat' => Yii::t('model', 'Latitude'),
             'lng' => Yii::t('model', 'Longitude'),
             'image' => Yii::t('model', 'Image'),
+            'im_dstretch' => Yii::t('model', 'Image DStretch'),
+            'im_drawing' => Yii::t('model', 'Drawing image'),
+            'im_reconstruction' => Yii::t('model', 'Reconstruction image'),
+            'im_overlay' => Yii::t('model', 'Image overlay'),
             'fileImage' => Yii::t('model', 'Image'),
+            'fileDstr' => Yii::t('model', 'Image DStretch'),
+            'fileDraw' => Yii::t('model', 'Drawing image'),
+            'fileReconstr' => Yii::t('model', 'Reconstruction image'),
+            'fileOverlay' => Yii::t('model', 'Image overlay'), 
             'method_id' => Yii::t('model', 'Method'),
             'style_id' => Yii::t('model', 'Style'),
             'culture_id' => Yii::t('model', 'Culture'),
@@ -200,7 +220,6 @@ class Petroglyph extends \yii\db\ActiveRecord
     {
         return $this->hasMany(PetroglyphImage::className(), ['petroglyph_id' => 'id']);
     }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -223,34 +242,74 @@ class Petroglyph extends \yii\db\ActiveRecord
      */
     public function upload()
     {
-        if ($this->validate() and !empty($this->fileImage)) {
+        if ($this->validate() and (!empty($this->fileImage)
+                                    or !empty($this->fileDstr)
+                                    or !empty($this->fileDraw)
+                                    or !empty($this->fileReconstr)
+                                    or !empty($this->fileOverlay))) {
 
             $path = self::basePath();
+            $imagesPull = array(
+                'Original' => array (
+                    'fileName' => 'fileImage',
+                    'file' => $this->fileImage,
+                    'fieldName' => 'image',
+                ),
+                'Dstretch' => array (
+                    'fileName' => 'fileDstr',
+                    'file' => $this->fileDstr,
+                    'fieldName' => 'im_dstretch',
+                ),
+                'Drawing' => array (
+                    'fileName' => 'fileDraw',
+                    'file' => $this->fileDraw,
+                    'fieldName' => 'im_drawing',
+                ),
+                'Reconstruction' => array (
+                    'fileName' => 'fileReconstr',
+                    'file' => $this->fileReconstr,
+                    'fieldName' => 'im_reconstruction',
+                ),
+                'Overlay' => array (
+                    'fileName' => 'fileOverlay',
+                    'file' => $this->fileOverlay,
+                    'fieldName' => 'im_overlay',
+                ),
+            );
+            
+            if(!empty($imagesPull)){
 
-            if (!empty($this->image) and file_exists($path . '/' . $this->image)) {
-                unlink($path . '/' . $this->image);
+                foreach($imagesPull as $key=>$item){
+                    $im = $item['file'];
+                    $fieldFile = $item['fileName'];
+                    $fieldIm = $item['fieldName'];
+                    if($im == null) continue;
+                    if (!empty($im) and file_exists($path . '/' . $im)) {
+                        unlink($path . '/' . $im);
 
-                if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->image)) {
-                    unlink($path . '/' . self::THUMBNAIL_PREFIX . $this->image);
+                        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $im)) {
+                            unlink($path . '/' . self::THUMBNAIL_PREFIX . $im);
+                        }
+                    }
+
+                    FileHelper::createDirectory($path);
+
+                    $newName = md5(uniqid($this->id));
+                    $im->saveAs($path . '/' . $newName . '.' . $im->extension);
+                    $this->$fieldIm = $newName . '.' . $im->extension;
+
+                    $sizes = getimagesize($path . '/' . $newName . '.' . $im->extension);
+                    if ($sizes[0] > self::THUMBNAIL_W) {
+                        $width = self::THUMBNAIL_W;
+                        $height = $width * $sizes[1] / $sizes[0];
+                        Image::thumbnail($path . '/' . $newName . '.' . $im->extension, $width, $height)
+                            ->resize(new Box($width, $height))
+                            ->save($path . '/' . self::THUMBNAIL_PREFIX . $newName . '.' . $im->extension, ['quality' => 80]);
+                    }
+                    
+                    $this->$fieldFile = false;
                 }
             }
-
-            FileHelper::createDirectory($path);
-
-            $newName = md5(uniqid($this->id));
-            $this->fileImage->saveAs($path . '/' . $newName . '.' . $this->fileImage->extension);
-            $this->image = $newName . '.' . $this->fileImage->extension;
-
-            $sizes = getimagesize($path . '/' . $newName . '.' . $this->fileImage->extension);
-            if ($sizes[0] > self::THUMBNAIL_W) {
-                $width = self::THUMBNAIL_W;
-                $height = $width * $sizes[1] / $sizes[0];
-                Image::thumbnail($path . '/' . $newName . '.' . $this->fileImage->extension, $width, $height)
-                    ->resize(new Box($width, $height))
-                    ->save($path . '/' . self::THUMBNAIL_PREFIX . $newName . '.' . $this->fileImage->extension, ['quality' => 80]);
-            }
-
-            $this->fileImage = false;
             return $this->save();
         } else {
             return false;
@@ -272,6 +331,65 @@ class Petroglyph extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public function getThumbnailImDstretch()
+    {
+        $path = self::basePath();
+
+        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->im_dstretch)) {
+            return self::THUMBNAIL_PREFIX . $this->im_dstretch;
+        } else {
+            return $this->im_dstretch;
+        }
+    }
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public function getThumbnailImDrawing()
+    {
+        $path = self::basePath();
+
+        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->im_drawing)) {
+            return self::THUMBNAIL_PREFIX . $this->im_drawing;
+        } else {
+            return $this->im_drawing;
+        }
+    }
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public function getThumbnailImReconstr()
+    {
+        $path = self::basePath();
+
+        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->im_reconstruction)) {
+            return self::THUMBNAIL_PREFIX . $this->im_reconstruction;
+        } else {
+            return $this->im_reconstruction;
+        }
+    }
+
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public function getThumbnailImOverlay()
+    {
+        $path = self::basePath();
+
+        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->im_overlay)) {
+            return self::THUMBNAIL_PREFIX . $this->im_overlay;
+        } else {
+            return $this->im_overlay;
+        }
+    }
     /**
      * Удаляем файл перед удалением записи
      *

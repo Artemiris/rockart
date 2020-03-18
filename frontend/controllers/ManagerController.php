@@ -636,6 +636,10 @@ class ManagerController extends Controller
 
             if ($model->save()) {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
+                $model->fileDstr = UploadedFile::getInstance($model, 'fileDstr');
+                $model->fileDraw = UploadedFile::getInstance($model, 'fileDraw');
+                $model->fileReconstr = UploadedFile::getInstance($model, 'fileReconstr');
+                $model->fileOverlay = UploadedFile::getInstance($model, 'fileOverlay');
                 $model->upload();
                 \Yii::$app->session->setFlash('success', "Данные внесены");
 

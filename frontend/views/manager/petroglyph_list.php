@@ -74,6 +74,34 @@ $this->params['breadcrumbs'] = [
             }
         ],
         [
+            'attribute' => 'im_dstretch',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_dstretch) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' .  $model->thumbnailImDstretch, ['width' => 100]);
+            }
+        ],
+        [
+            'attribute' => 'im_drawing',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_drawing) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' .  $model->thumbnailImDrawing, ['width' => 100]);
+            }
+        ],
+        [
+            'attribute' => 'im_reconstruction',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_reconstruction) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' .  $model->thumbnailImReconstr, ['width' => 100]);
+            }
+        ],
+        [
+            'attribute' => 'im_overlay',
+            'format' => 'html',
+            'value' => function ($model) {
+                return empty($model->im_overlay) ? null : Html::img(Petroglyph::SRC_IMAGE . '/' .  $model->thumbnailImOverlay, ['width' => 100]);
+            }
+        ],
+        [
             'class' => 'backend\grid\ActionColumn',
             'options' => ['style' => 'width: 100px;'],
             'buttons' => [
