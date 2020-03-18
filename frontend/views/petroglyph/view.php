@@ -104,6 +104,44 @@ JS;
         ]); ?>
         </div>
     <?endif;?>
+    
+    <?php if (!empty($petroglyph->im_dstretch)): ?>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDstretch, [
+                'class' => 'img-responsive'
+            ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_dstretch, [
+                'rel' => 'petroglyphImages'
+            ]); ?>
+        </div>
+    <?endif;?>
+    <?php if (!empty($petroglyph->im_drawing)): ?>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDrawing, [
+                'class' => 'img-responsive'
+            ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_drawing, [
+                'rel' => 'petroglyphImages'
+            ]); ?>
+        </div>
+    <?endif;?>
+    <?php if (!empty($petroglyph->im_reconstruction)): ?>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImReconstr, [
+                'class' => 'img-responsive'
+            ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_reconstruction, [
+                'rel' => 'petroglyphImages'
+            ]); ?>
+        </div>
+    <?endif;?>
+    <?php if (!empty($petroglyph->im_overlay)): ?>
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImOverlay, [
+                'class' => 'img-responsive'
+            ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_overlay, [
+                'rel' => 'petroglyphImages'
+            ]); ?>
+        </div>
+    <?endif;?>
+
     <?php if (!empty($petroglyph->images)): ?>
         <?php foreach ($petroglyph->images as $item): ?>
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
