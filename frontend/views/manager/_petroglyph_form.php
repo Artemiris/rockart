@@ -40,10 +40,10 @@ use mihaildev\ckeditor\CKEditor;
                 ]) ?>
             <?= $form->field($model, 'lat') ?>
             <?= $form->field($model, 'lng') ?>
-            <?= $form->field($model, 'method_id')->dropDownList($methods, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
-            <?= $form->field($model, 'culture_id')->dropDownList($cultures, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
-            <?= $form->field($model, 'epoch_id')->dropDownList($epochs, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
-            <?= $form->field($model, 'style_id')->dropDownList($styles, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
+            <?= $form->field($model, 'culture_ids')->listBox($cultures, ['multiple' => true]) ?>
+            <?= $form->field($model, 'epoch_ids')->listBox($epochs, ['multiple' => true]) ?>
+            <?= $form->field($model, 'method_ids')->listBox($methods, ['multiple' => true]) ?>
+            <?= $form->field($model, 'style_ids')->listBox($styles, ['multiple' => true]) ?>
             <?= $form->field($model, 'public')->checkbox() ?>
             <?= $form->field($model, 'fileImage')->fileInput(), 
                 $form->field($model, 'fileDstr')->fileInput(),

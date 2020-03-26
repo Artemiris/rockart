@@ -27,9 +27,10 @@ use Imagine\Image\Box;
  * @property string $orientation_x
  * @property string $orientation_y
  * @property string $orientation_z
- * @property int $method_id
- * @property int $culture_id
- * @property int $epoch_id
+ * @property int[] $method_ids
+ * @property int[] $culture_ids
+ * @property int[] $epoch_ids
+ * @property int[] $style_ids
  * @property int $archsite_id
  * @property int $deleted
  * @property int $public
@@ -47,9 +48,10 @@ use Imagine\Image\Box;
  * @property string $technical_description
  * @property string $technical_description_en
  *
- * @property Culture $culture
- * @property Epoch $epoch
- * @property Method $method
+ * @property Culture[] $cultures
+ * @property Epoch[] $epochs
+ * @property Method[] $methods
+ * @property Style[] $styles
  * @property PetroglyphImage[] $images
  * @property PetroglyphThreeD[] $threeD
  * @property Composition[] $compositions
@@ -91,14 +93,13 @@ class Petroglyph extends \yii\db\ActiveRecord
             [['name', 'name_en'], 'required'],
             [['name', 'name_en', 'description', 'description_en', 'index', 'technical_description', 'publication'], 'string'],
             [['lat', 'lng', 'orientation_x', 'orientation_y', 'orientation_z'], 'number'],
-            [['method_id', 'culture_id', 'epoch_id', 'deleted', 'public'], 'integer'],
             [['uuid'], 'string', 'max' => 64],
             [['image', 'im_dstretch', 'im_drawing', 'im_reconstruction', 'im_overlay'], 'string', 'max' => 255],
-            [['culture_id'], 'exist', 'skipOnError' => true, 'targetClass' => Culture::className(), 'targetAttribute' => ['culture_id' => 'id']],
-            [['epoch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Epoch::className(), 'targetAttribute' => ['epoch_id' => 'id']],
-            [['method_id'], 'exist', 'skipOnError' => true, 'targetClass' => Method::className(), 'targetAttribute' => ['method_id' => 'id']],
-            [['style_id'], 'exist', 'skipOnError' => true, 'targetClass' => Style::className(), 'targetAttribute' => ['style_id' => 'id']],
-            [['archsite_id'], 'exist', 'skipOnError' => true, 'targetClass' => Archsite::className(), 'targetAttribute' => ['archsite_id' => 'id']],
+            ['culture_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Culture::className(), 'targetAttribute' => 'id'],
+            ['epoch_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Epoch::className(), 'targetAttribute' => 'id'],
+            ['method_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Method::className(), 'targetAttribute' => 'id'],
+            ['style_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Style::className(), 'targetAttribute' => 'id'],
+            ['archsite_id', 'exist', 'skipOnError' => true, 'targetClass' => Archsite::className(), 'targetAttribute' => 'id'],
             [['fileImage', 'fileDraw', 'fileReconstr', 'fileOverlay', 'fileDstr'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
         ];
     }
@@ -160,10 +161,10 @@ class Petroglyph extends \yii\db\ActiveRecord
             'fileDraw' => Yii::t('model', 'Drawing image'),
             'fileReconstr' => Yii::t('model', 'Reconstruction image'),
             'fileOverlay' => Yii::t('model', 'Image overlay'), 
-            'method_id' => Yii::t('model', 'Method'),
-            'style_id' => Yii::t('model', 'Style'),
-            'culture_id' => Yii::t('model', 'Culture'),
-            'epoch_id' => Yii::t('model', 'Epoch'),
+            'method_ids' => Yii::t('model', 'Methods'),
+            'style_ids' => Yii::t('model', 'Styles'),
+            'culture_ids' => Yii::t('model', 'Cultures'),
+            'epoch_ids' => Yii::t('model', 'Epochs'),
             'archsite_id' => Yii::t('model', 'Archsite'),
             'public' => Yii::t('model', 'Published'),
             'index' => Yii::t('model', 'Index'),
@@ -177,35 +178,97 @@ class Petroglyph extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCulture()
-    {
-        return $this->hasOne(Culture::className(), ['id' => 'culture_id']);
+    public function getCultures() {
+        return $this->hasMany(Culture::className(), ['id' => 'culture_id'])
+            ->viaTable('petroglyph_culture', ['petroglyph_id' => 'id']);
+    }
+
+    public function getCulture_ids() {
+        return array_keys($this->hasMany(Culture::className(), ['id' => 'culture_id'])
+            ->viaTable('petroglyph_culture', ['petroglyph_id' => 'id'])->indexBy('id')->asArray()->all());
+    }
+    public function setCulture_ids($culture_ids) {}
+    public function setCultures($culture_ids) {
+        $this->unlinkAll('cultures', true);
+        if (is_array($culture_ids)) {
+            foreach ($culture_ids as $culture_id) {
+                $culture = Culture::find()->where(['id' => $culture_id])->one();
+                $this->link('cultures', $culture);
+            }
+        }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEpoch()
-    {
-        return $this->hasOne(Epoch::className(), ['id' => 'epoch_id']);
+    public function getEpochs() {
+        return $this->hasMany(Epoch::className(), ['id' => 'epoch_id'])
+            ->viaTable('petroglyph_epoch', ['petroglyph_id' => 'id']);
+    }
+
+    public function getEpoch_ids() {
+        return array_keys($this->hasMany(Epoch::className(), ['id' => 'epoch_id'])
+            ->viaTable('petroglyph_epoch', ['petroglyph_id' => 'id'])->indexBy('id')->asArray()->all());
+    }
+
+    public function setEpoch_ids($epoch_ids) { }
+    public function setEpochs($epoch_ids) {
+        $this->unlinkAll('epochs', true);
+        if (is_array($epoch_ids)) {
+            foreach ($epoch_ids as $epoch_id) {
+                $epoch = Epoch::find()->where(['id' => $epoch_id])->one();
+                $this->link('epochs', $epoch);
+            }
+        }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMethod()
-    {
-        return $this->hasOne(Method::className(), ['id' => 'method_id']);
+    public function getMethods() {
+        return $this->hasMany(Method::className(), ['id' => 'method_id'])
+            ->viaTable('petroglyph_method', ['petroglyph_id' => 'id']);
+    }
+
+    public function getMethod_ids() {
+        return array_keys($this->hasMany(Method::className(), ['id' => 'method_id'])
+            ->viaTable('petroglyph_method', ['petroglyph_id' => 'id'])->indexBy('id')->asArray()->all());
+    }
+
+    public function setMethod_ids($method_ids) { }
+    public function setMethods($method_ids) {
+        $this->unlinkAll('methods', true);
+        if (is_array($method_ids)) {
+            foreach ($method_ids as $method_id) {
+                $method = Method::find()->where(['id' => $method_id])->one();
+                $this->link('methods', $method);
+            }
+        }
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStyle()
-    {
-        return $this->hasOne(Style::className(), ['id' => 'style_id']);
+    public function getStyles() {
+        return $this->hasMany(Style::className(), ['id' => 'style_id'])
+            ->viaTable('petroglyph_style', ['petroglyph_id' => 'id']);
     }
 
+    public function getStyle_ids() {
+        return array_keys($this->hasMany(Style::className(), ['id' => 'style_id'])
+            ->viaTable('petroglyph_style', ['petroglyph_id' => 'id'])->indexBy('id')->asArray()->all());
+    }
+
+    public function setStyle_ids($style_ids) { }
+    public function setStyles($style_ids) {
+        $this->unlinkAll('styles', true);
+        if (is_array($style_ids)) {
+            foreach ($style_ids as $style_id) {
+                $style = Style::find()->where(['id' => $style_id])->one();
+                $this->link('styles', $style);
+            }
+        }
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

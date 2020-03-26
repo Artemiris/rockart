@@ -194,35 +194,39 @@ JS;
                 ]) ?>
             </div>
     <?php endif; ?>
-    <?php if (!empty($petroglyph->culture)):?>
+    <?php if (!empty($petroglyph->cultures)):?>
         <div class="col-xs-6 col-sm-6 col-md-3">
             <?= $this->render('_panel', [
                 'title' => Yii::t('app', 'Culture'),
-                'data' => [(isset($petroglyph->culture) ? $petroglyph->culture->name : null)],
+                'data' => [(isset($petroglyph->cultures) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $petroglyph->cultures)) : null)],
             ]) ?>
         </div>
     <?php endif; ?>
-    <?php if (!empty($petroglyph->epoch)):?>
+    <?php if (!empty($petroglyph->epochs)):?>
         <div class="col-xs-6 col-sm-6 col-md-3">
             <?= $this->render('_panel', [
                 'title' => Yii::t('app', 'Epoch'),
-                'data' => [(isset($petroglyph->epoch) ? $petroglyph->epoch->name : null)],
+                'data' => [(isset($petroglyph->epochs) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $petroglyph->epochs)) : null)],
             ]) ?>
         </div>
     <?php endif; ?>
-    <?php if (!empty($petroglyph->method)):?>
+    <?php if (!empty($petroglyph->methods)):?>
         <div class="col-xs-6 col-sm-6 col-md-3">
             <?= $this->render('_panel', [
                 'title' => Yii::t('app', 'Method'),
-                'data' => [(isset($petroglyph->method) ? $petroglyph->method->name : null)],
+                'data' => [(isset($petroglyph->methods) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $petroglyph->methods)) : null)],
             ]) ?>
         </div>
     <?php endif; ?>
-    <?php if (!empty($petroglyph->style)):?>
+    <?php if (!empty($petroglyph->styles)):?>
         <div class="col-xs-6 col-sm-6 col-md-3">
             <?= $this->render('_panel', [
                 'title' => Yii::t('app', 'Style'),
-                'data' => [(isset($petroglyph->style) ? $petroglyph->style->name : null)],
+                'data' => [(isset($petroglyph->styles) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $petroglyph->styles)) : null)],
             ]) ?>
         </div>
     <?php endif; ?>
