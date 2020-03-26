@@ -515,7 +515,6 @@ class ManagerController extends Controller
         if (!\Yii::$app->request->get('showDeleted')) {
             $query->where(['deleted' => null]);
         }
-
         $provider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -544,6 +543,10 @@ class ManagerController extends Controller
         if ($model->load(\Yii::$app->request->post())) {
 
             if ($model->save()) {
+                $model->setCultures(\Yii::$app->request->post('Petroglyph')['culture_ids']);
+                $model->setEpochs(\Yii::$app->request->post('Petroglyph')['epoch_ids']);
+                $model->setMethods(\Yii::$app->request->post('Petroglyph')['method_ids']);
+                $model->setStyles(\Yii::$app->request->post('Petroglyph')['style_ids']);
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
                 \Yii::$app->session->setFlash('success', "Данные внесены");
@@ -633,8 +636,11 @@ class ManagerController extends Controller
         }
 
         if ($model->load(\Yii::$app->request->post())) {
-
             if ($model->save()) {
+                $model->setCultures(\Yii::$app->request->post('Petroglyph')['culture_ids']);
+                $model->setEpochs(\Yii::$app->request->post('Petroglyph')['epoch_ids']);
+                $model->setMethods(\Yii::$app->request->post('Petroglyph')['method_ids']);
+                $model->setStyles(\Yii::$app->request->post('Petroglyph')['style_ids']);
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->fileDstr = UploadedFile::getInstance($model, 'fileDstr');
                 $model->fileDraw = UploadedFile::getInstance($model, 'fileDraw');

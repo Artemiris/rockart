@@ -56,31 +56,35 @@ $this->params['breadcrumbs'] = [
         'lng',
         'index',
         [
-            'attribute' => 'culture_id',
+            'attribute' => 'cultures',
             'format' => 'text',
             'value' => function ($model) {
-                return isset($model->culture) ? $model->culture->name : null;
+                return isset($model->cultures) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $model->cultures)) : null;
             }
         ],
         [
-            'attribute' => 'epoch_id',
+            'attribute' => 'epochs',
             'format' => 'text',
             'value' => function ($model) {
-                return isset($model->epoch) ? $model->epoch->name : null;
+                return isset($model->epochs) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $model->epochs)) : null;
             }
         ],
         [
-            'attribute' => 'method_id',
+            'attribute' => 'methods',
             'format' => 'text',
             'value' => function ($model) {
-                return isset($model->method) ? $model->method->name : null;
+                return isset($model->methods) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $model->methods)) : null;
             }
         ],
         [
-            'attribute' => 'style_id',
+            'attribute' => 'styles',
             'format' => 'text',
             'value' => function ($model) {
-                return isset($model->style) ? $model->style->name : null;
+                return isset($model->styles) ? implode (", ",
+                    array_map(function($obj) { return $obj->name; }, $model->styles)) : null;
             }
         ],
         [
