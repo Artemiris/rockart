@@ -93,6 +93,7 @@ class Petroglyph extends \yii\db\ActiveRecord
             [['name', 'name_en'], 'required'],
             [['name', 'name_en', 'description', 'description_en', 'index', 'technical_description', 'publication'], 'string'],
             [['lat', 'lng', 'orientation_x', 'orientation_y', 'orientation_z'], 'number'],
+            [['deleted', 'public'], 'integer'],
             [['uuid'], 'string', 'max' => 64],
             [['image', 'im_dstretch', 'im_drawing', 'im_reconstruction', 'im_overlay'], 'string', 'max' => 255],
             ['culture_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Culture::className(), 'targetAttribute' => 'id'],
