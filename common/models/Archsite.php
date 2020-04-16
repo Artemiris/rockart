@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Yii;
 use omgdef\multilingual\MultilingualBehavior;
 use omgdef\multilingual\MultilingualQuery;
 use yii\db\ActiveRecord;
@@ -164,7 +165,12 @@ class Archsite extends ActiveRecord
      */
     public function getPetroglyphs()
     {
-        return $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id']);
+        $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id']);
+        $query->where(['deleted' => null])->orderBy(['id' => SORT_DESC]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+        return $query;
     }
 
     /**
