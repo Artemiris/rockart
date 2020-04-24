@@ -1,5 +1,7 @@
-ymaps.ready(init);
 var map;
+var markerClusterer;
+var markers;
+ymaps.ready(init);
 
 function init(){
     var map_center = [50.2, 87.5];
@@ -70,7 +72,7 @@ function init(){
     initialize_markers(arr);
 }
 function  initialize_markers(arr){
-    var markers = [];
+    markers = [];
     for (var i =0; i<arr.length; i++) {
         var img_str = arr[i]["image"] != null ? '<div class="infowindow-petroglyph"><img class="img-responsive" src="' + arr[i]["image"] + '"></div>':""
         var marker = new ymaps.Placemark([ parseFloat(arr[i]["lat"]), parseFloat(arr[i]["lng"])], {
@@ -87,8 +89,40 @@ function  initialize_markers(arr){
 
     }
 
-    var clusterer = new ymaps.Clusterer({ clusterDisableClickZoom: true , maxZoom: 17});
-    clusterer.add(markers);
-    map.geoObjects.add(clusterer);
+    markerClusterer = new ymaps.Clusterer({ clusterDisableClickZoom: true , maxZoom: 17});
+    markerClusterer.add(markers);
+    map.geoObjects.add(markerClusterer);
 }
 
+function changeImageType(newImageType) {
+    for (var i =0; i<arr.length; i++) {
+        var info = arr[i];
+        var img_str = "";
+        switch (newImageType) {
+            case "viewdstretch":
+                img_str = info["im_dstretch"] ? '<img class="img-responsive" src="' + info["im_dstretch"] + '">' : "";
+                break;
+            case "viewdrawing":
+                img_str = info["im_drawing"] ? '<img class="img-responsive" src="' + info["im_drawing"] + '">' : "";
+                break;
+            case "viewreconstruction":
+                img_str = info["im_reconstruction"] ? '<img class="img-responsive" src="' + info["im_reconstruction"] + '">' : "";
+                break;
+            case "viewoverlay":
+                img_str = info["im_overlay"] ? '<img class="img-responsive" src="' + info["im_overlay"] + '">' : "";
+                break;
+        }
+        if (!img_str) img_str = info["image"] ? '<img class="img-responsive" src="' + info["image"] + '">' : "";
+
+        img_str = img_str ? '<div class="infowindow-petroglyph">' + img_str + '</div>' : "";
+
+        markers[i].properties.set('hintContent', '<p>' + arr[i]["name"] + '</p>' + img_str);
+    }
+}
+function showMarker(i) {
+    markerClusterer.add(markers[i]);
+}
+
+function hideMarkers() {
+    markerClusterer.remove(markers);
+}
