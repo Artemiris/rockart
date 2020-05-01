@@ -14,6 +14,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+
 /**
  * Class ArchsiteController
  * @package frontend\controllers
@@ -37,14 +38,22 @@ class ArchsiteController extends Controller
 
     public function actionView($id)
     {
-        $archsite = Archsite::findOne($id);
+       $archsite = Archsite::findOne($id);
 
         if (empty($archsite)) {
             throw new HttpException(404);
         }
+        $petroglyphs = null;
+
+        if ($filter = Yii::$app->request->get('filter')) {
+            $petroglyphs = $archsite->searchPetroglyphs(mb_strtoupper($filter))->all();
+        }
+        else $petroglyphs = $archsite->petroglyphs;
 
         return $this->render('view', [
             'archsite' => $archsite,
+            'petroglyphs' => $petroglyphs,
+            'filter' => $filter
         ]);
     }
 }

@@ -50,8 +50,8 @@ function changePictures(newImages){
 
 }
 
-vieworigin.addEventListener("click", onViewOriginal);
-viewdstretch.addEventListener("click", onViewDStretch);
-viewdrawing.addEventListener("click", onViewDrawing);
-viewreconstruction.addEventListener("click", onViewReconstraction);
-viewoverlay.addEventListener("click", onViewOverlay);
+if (typeof vieworigin != "undefined") vieworigin.addEventListener("click", onViewOriginal);
+if (typeof viewdstretch != "undefined") viewdstretch.addEventListener("click", onViewDStretch);
+if (typeof viewdrawing != "undefined") viewdrawing.addEventListener("click", onViewDrawing);
+if (typeof viewreconstruction != "undefined") viewreconstruction.addEventListener("click", onViewReconstraction);
+if (typeof viewoverlay != "undefined") viewoverlay.addEventListener("click", onViewOverlay);
