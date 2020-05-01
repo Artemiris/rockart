@@ -32,7 +32,7 @@ $(document).ready(function () {
     var container = $('.collection');
 
     container.imagesLoaded(function () {
-        container.masonry();
+        container.masonry({itemSelector: '.msnry'});
     });
 });
 
@@ -43,9 +43,13 @@ function filter(){
     if ($('#method_button').val() != "method_all") filter += '.'+$('#method_button').val();
     if ($('#style_button').val() != "style_all") filter += '.'+$('#style_button').val();
 
+    $('.petroglyph-card').removeClass('msnry');
+    $('.collection').masonry('destroy');
     $('.petroglyph-card').hide();
+    $(filter).addClass('msnry');
     $(filter).show();
-    $('.collection').masonry({transitionDuration: 0});
+    $('.collection').masonry({itemSelector: '.msnry'});
+
 }
 
 $(document).ready(function() {
@@ -76,7 +80,7 @@ JS;
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-$this->registerJsFile('/js/archsitemanage.js');
+$this->registerJsFile('/js/archsitemanage.js?20200501');
 $this->registerJs($script, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
@@ -153,7 +157,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
             foreach($petroglyph->methods as $method) $class .= " method_" . $method->id;
             foreach($petroglyph->styles as $style) $class .= " style_" . $style->id;
             ?>
-            <div id="card_<?=$petroglyph->id?>" class="petroglyph-card <?= $class?> col-xs-12 col-sm-4 col-md-3">
+            <div id="card_<?=$petroglyph->id?>" class="petroglyph-card <?= $class?> col-xs-12 col-sm-4 col-md-3 msnry">
                 <?php if (!empty($petroglyph->image)): ?>
                     
                     <a href="<?= Url::to(['petroglyph/view', 'id' => $petroglyph->id]) ?>" class="petroglyph-item" >
