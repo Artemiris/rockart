@@ -16,6 +16,15 @@ $this->params['breadcrumbs'] = [
     $this->title,
 ];
 
+?>
+
+<?= $this->render('../layouts/_filter_bar', [
+    'petroglyphs' => $petroglyphs,
+    'filter' => $filter,
+]) ?>
+
+
+<?php
 
 $script = <<< JS
 
@@ -26,6 +35,42 @@ $(document).ready(function () {
         container.masonry();
     });
 });
+
+function filter(){
+    var filter = ".petroglyph-card";
+    if ($('#epoch_button').val() != "epoch_all") filter += '.'+$('#epoch_button').val();
+    if ($('#culture_button').val() != "culture_all") filter += '.'+$('#culture_button').val();
+    if ($('#method_button').val() != "method_all") filter += '.'+$('#method_button').val();
+    if ($('#style_button').val() != "style_all") filter += '.'+$('#style_button').val();
+
+    $('.petroglyph-card').hide();
+    $(filter).show();
+    $('.collection').masonry({transitionDuration: 0});
+}
+
+$(document).ready(function() {
+    $("#imagetype_dropdown li a").click(
+        function () { $('#imagetype_button').html($(this).text() + ' <span class="caret"></span>');
+        });
+    
+    $("#epoch_dropdown li a").click(function () {
+         $('#epoch_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#epoch_button').val($(this).attr('id'));
+         filter()});
+    $("#culture_dropdown li a").click(function () {
+         $('#culture_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#culture_button').val($(this).attr('id'));
+         filter()});
+    $("#method_dropdown li a").click(function () {
+         $('#method_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#method_button').val($(this).attr('id'));
+         filter()});
+    $("#style_dropdown li a").click(function () {
+         $('#style_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#style_button').val($(this).attr('id'));
+         filter()});    
+});
+
 
 JS;
 
@@ -70,7 +115,6 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
     ]
 ]) ?>
 
-
 <?php if (empty($archsite->image)): ?>
     <?php if (Yii::$app->user->can('manager')): ?>
         <?= Html::a(Yii::t('app', 'Edit'), ['manager/archsite-update', 'id' => $archsite->id], ['class' => 'btn btn-primary pull-right']) ?>
@@ -98,19 +142,18 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
 
 <div class="clearfix"></div>
 
-<?php if (!empty($archsite->petroglyphs)): ?>
+<?php if (!empty($petroglyphs)): ?>
     <h2><?= Yii::t('app', 'Panels') ?></h2>
-    <div class="form-group">
-        <button type="button" id="vieworigin" class="btn btn-primary"><?= Yii::t('manager', 'View original images')?></button>
-        <button type="button" id="viewdstretch" class="btn btn-primary"><?= Yii::t('manager', 'View images DStretch')?></button>
-        <button type="button" id="viewdrawing" class="btn btn-primary"><?= Yii::t('manager', 'View drawing')?></button>
-        <button type="button" id="viewreconstruction" class="btn btn-primary"><?= Yii::t('manager', 'View reconstruction')?></button>
-        <button type="button" id="viewoverlay" class="btn btn-primary"><?= Yii::t('manager', 'View overlay images')?></button>
-    </div>
-    <div class="row collection">
-
-        <?php foreach ($archsite->petroglyphs as $petroglyph): ?>
-            <div class="col-xs-12 col-sm-4 col-md-3">
+    <div class="row collection" id="petroglyph_container">
+        <?php foreach ($petroglyphs as $petroglyph): ?>
+            <?php
+            $class = "";
+            foreach($petroglyph->epochs as $epoch) $class .= " epoch_" . $epoch->id;
+            foreach($petroglyph->cultures as $culture) $class .= " culture_" . $culture->id;
+            foreach($petroglyph->methods as $method) $class .= " method_" . $method->id;
+            foreach($petroglyph->styles as $style) $class .= " style_" . $style->id;
+            ?>
+            <div id="card_<?=$petroglyph->id?>" class="petroglyph-card <?= $class?> col-xs-12 col-sm-4 col-md-3">
                 <?php if (!empty($petroglyph->image)): ?>
                     
                     <a href="<?= Url::to(['petroglyph/view', 'id' => $petroglyph->id]) ?>" class="petroglyph-item" >

@@ -1,3 +1,7 @@
+var imagetype = "vieworigin";
+var markerClusterer;
+var markers;
+
 function initMap() {
     var map_center = new google.maps.LatLng(50.2, 87.5);
     if ($.cookie("map_center") != undefined) {
@@ -71,10 +75,19 @@ function initialize_markers(arr) {
         //открывает infowindows при наведении курсора мыши
         marker.addListener('mouseover', (function (marker, infowindow, info) {
             return function () {
-                var img_str = info["image"] != null ? '<div class="infowindow-petroglyph"><img class="img-responsive" src="' + info["image"] + '"></div>' : ""
+                var img_str = "";
+                switch (imagetype){
+                    case "viewdstretch": img_str = info["im_dstretch"] ? '<img class="img-responsive" src="' + info["im_dstretch"] + '">' : ""; break;
+                    case "viewdrawing": img_str = info["im_drawing"] ? '<img class="img-responsive" src="' + info["im_drawing"] + '">' : ""; break;
+                    case "viewreconstruction": img_str = info["im_reconstruction"] ? '<img class="img-responsive" src="' + info["im_reconstruction"] + '">' : ""; break;
+                    case "viewoverlay": img_str = info["im_overlay"] ? '<img class="img-responsive" src="' + info["im_overlay"] + '">' : ""; break;
+                }
+                if (!img_str) img_str = info["image"] ? '<img class="img-responsive" src="' + info["image"] + '">' : "";
+                    
+                img_str = img_str ? '<div class="infowindow-petroglyph">' + img_str + '</div>' : "";
                 infowindow.setContent('<p>' + info["name"] + '</p>' + img_str);
                 infowindow.open(map, marker);
-                console.log(infowindow);
+                //console.log(infowindow); //switch this logging on for debug
             }
         })(marker, infowindow, arr[i]));
         marker.addListener('mousedown', (function (marker, infowindow, info) {
@@ -97,7 +110,7 @@ function initialize_markers(arr) {
         })(marker, infowindow, arr[i]));
     }
 
-    var markerClusterer = new MarkerClusterer(map, markers,
+    markerClusterer = new MarkerClusterer(map, markers,
         {
             imagePath: '/js/map/markerclusterer/images/m',
             maxZoom: 17,
@@ -105,6 +118,14 @@ function initialize_markers(arr) {
             styles: null
         }
     );
+}
+
+function showMarker(i) {
+    markerClusterer.addMarker(markers[i]);
+}
+
+function hideMarkers() {
+    markerClusterer.removeMarkers(markers);
 }
 
 function addMarker(location) {
@@ -117,4 +138,8 @@ function addMarker(location) {
     markers.push(marker);
 
     return marker;
+}
+
+function changeImageType(newImageType) {
+    imagetype = newImageType;
 }
