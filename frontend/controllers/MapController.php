@@ -39,7 +39,7 @@ class MapController extends BaseController
         $query = null;
 
         if ($filter = Yii::$app->request->get('filter'))
-            $query = Petroglyph::morphySearch(mb_strtoupper($filter))->andWhere(['not', ['lat' => null]])->andWhere(['not', ['lng' => null]]);
+            $query = Petroglyph::morphySearch(mb_strtoupper($filter));
         else{
             $query = Petroglyph::find()->where(['deleted' => null]);
             if (!Yii::$app->user->can('manager')) $query->andWhere(['public' => 1]);
