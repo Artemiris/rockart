@@ -12,7 +12,7 @@ use common\models\Petroglyph;
 $this->title = $archsite->name;
 
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Archsites'), 'url' => ['archsite/index']],
+    ['label' => Yii::t('app', 'Sites'), 'url' => ['archsite/index']],
     $this->title,
 ];
 
