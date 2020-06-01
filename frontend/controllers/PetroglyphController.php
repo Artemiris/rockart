@@ -29,11 +29,14 @@ class PetroglyphController extends BaseController
      */
     public function actionIndex()
     {
-        $query = Petroglyph::find()->where(['deleted' => null])->orderBy(['id' => SORT_DESC]);
-
-        if (!Yii::$app->user->can('manager')) {
-            $query->andWhere(['public' => 1]);
+        $query = null;
+        if ($filter = Yii::$app->request->get('filter'))
+            $query = Petroglyph::morphySearch(mb_strtoupper($filter));
+        else{
+            $query = Petroglyph::find()->where(['deleted' => null]);
+            if (!Yii::$app->user->can('manager')) $query->andWhere(['public' => 1]);
         }
+        $query->orderBy(['id' => SORT_DESC])->all();
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -44,6 +47,7 @@ class PetroglyphController extends BaseController
 
         return $this->render('index', [
             'provider' => $provider,
+            'filter' => $filter,
         ]);
     }
 
