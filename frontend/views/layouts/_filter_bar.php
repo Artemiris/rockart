@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 
 ?>
@@ -145,6 +146,35 @@ use yii\widgets\ActiveForm;
                 foreach ($styles as $style_name => $style_data) {
                     ?>
                     <li><a href="#" id="style_<?= $style_data['id'] ?>"><?= $style_name ?> (<?= $style_data['count'] ?>
+                            )</a></li>
+                <?php } ?>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button id="area_button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" value="area_all">
+                <?= Yii::t('app', 'All areas') ?> <span class="caret"></span>
+            </button>
+            <ul id="area_dropdown" class="dropdown-menu">
+                <li><a id="area_all" href="#"><?= Yii::t('app', 'All areas') ?></a></li>
+                <?php
+                $areasAll = ArrayHelper::map(\common\models\Area::find()->all(), 'id', 'name');
+                $areas = array();
+                foreach ($petroglyphs as $petroglyph) {
+                    if (!empty($petroglyph->area_id)) {
+
+                            if (!isset($areas[$petroglyph->area_id])) {
+                                $areas[$petroglyph->area_id]['id'] = $petroglyph->area_id;
+                                $areas[$petroglyph->area_id]['name'] = $areasAll[$petroglyph->area_id];
+                                $areas[$petroglyph->area_id]['count'] = 1;
+                            } else $areas[$petroglyph->area_id]['count']++;
+
+                    }
+                }
+                arsort($areas);
+                foreach ($areas as $area) {
+                    ?>
+                    <li><a href="#" id="area_<?= $area['id'] ?>"><?= $area['name'] ?> (<?= $area['count'] ?>
                             )</a></li>
                 <?php } ?>
             </ul>

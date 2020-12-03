@@ -42,6 +42,7 @@ function filter(){
     if ($('#culture_button').val() != "culture_all") filter += '.'+$('#culture_button').val();
     if ($('#method_button').val() != "method_all") filter += '.'+$('#method_button').val();
     if ($('#style_button').val() != "style_all") filter += '.'+$('#style_button').val();
+    if ($('#area_button').val() != "area_all") filter += '.'+$('#area_button').val();
 
     $('.petroglyph-card').removeClass('msnry');
     $('.collection').masonry('destroy');
@@ -72,7 +73,11 @@ $(document).ready(function() {
     $("#style_dropdown li a").click(function () {
          $('#style_button').html($(this).text() + ' <span class="caret"></span>');
          $('#style_button').val($(this).attr('id'));
-         filter()});    
+         filter()});
+    $("#area_dropdown li a").click(function () {
+         $('#area_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#area_button').val($(this).attr('id'));
+         filter()}); 
 });
 
 
@@ -156,6 +161,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
             foreach($petroglyph->cultures as $culture) $class .= " culture_" . $culture->id;
             foreach($petroglyph->methods as $method) $class .= " method_" . $method->id;
             foreach($petroglyph->styles as $style) $class .= " style_" . $style->id;
+            if(isset($petroglyph->area_id)) $class .= " area_" . $petroglyph->area_id;
             ?>
             <div id="card_<?=$petroglyph->id?>" class="petroglyph-card <?= $class?> col-xs-12 col-sm-4 col-md-3 msnry">
                 <?php if (!empty($petroglyph->image)): ?>
