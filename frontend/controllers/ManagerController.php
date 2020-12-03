@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Area;
 use common\models\Culture;
 use common\models\Epoch;
 use common\models\Method;
@@ -534,6 +535,7 @@ class ManagerController extends Controller
         $model = new Petroglyph();
 
         $archsites = ArrayHelper::map(Archsite::find()->all(), 'id', 'name');
+        $areas = ArrayHelper::map(Area::find()->all(), 'id', 'name');
 
         $cultures = ArrayHelper::map(Culture::find()->all(), 'id', 'name');
         $epochs = ArrayHelper::map(Epoch::find()->all(), 'id', 'name');
@@ -564,6 +566,7 @@ class ManagerController extends Controller
             'epochs' => $epochs,
             'methods' => $methods,
             'styles' => $styles,
+            'areas' => $areas
         ]);
     }
 
@@ -625,6 +628,7 @@ class ManagerController extends Controller
         $model = Petroglyph::find()->multilingual()->where(['id' => $id])->one();
 
         $archsites = ArrayHelper::map(Archsite::find()->all(), 'id', 'name');
+        $areas = ArrayHelper::map(Area::find()->where(['archsite_id'=>$model->archsite_id])->all(), 'id', 'name');
 
         $cultures = ArrayHelper::map(Culture::find()->all(), 'id', 'name');
         $epochs = ArrayHelper::map(Epoch::find()->all(), 'id', 'name');
@@ -663,6 +667,7 @@ class ManagerController extends Controller
             'epochs' => $epochs,
             'methods' => $methods,
             'styles' => $styles,
+            'areas' => $areas
         ]);
     }
 
@@ -1092,4 +1097,79 @@ class ManagerController extends Controller
         return $this->redirect(['manager/composition']);
     }
 
+    public function actionAreaCreate()
+    {
+        $model = new Area();
+        $archsites = ArrayHelper::map(Archsite::find()->all(),
+            'id', 'name');
+
+        if($model->load(\Yii::$app->request->post()))
+        {
+            if($model->save())
+            {
+                \Yii::$app->session->setFlash('success', "Данные внесены");
+                return $this->redirect(['manager/area-update', 'id' => $model->id]);
+            }
+            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+        }
+
+        return $this->render('area_create',[
+            'model' => $model,
+            'archsites' => $archsites
+        ]);
+    }
+
+    public function actionAreaUpdate($id)
+    {
+        $model = Area::find()->multilingual()->where(['id' => $id])->one();
+
+        if (empty($model))
+        {
+            throw new HttpException(500);
+        }
+
+        $archsites = ArrayHelper::map(Archsite::find()->all(),
+            'id', 'name');
+
+        if($model->load(\Yii::$app->request->post()))
+        {
+            if($model->save())
+            {
+                \Yii::$app->session->setFlash('success', "Данные внесены");
+                return $this->refresh();
+            }
+            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+        }
+
+        return $this->render('area_update',[
+            'model' => $model,
+            'archsites' => $archsites
+        ]);
+    }
+
+    public function actionAreaDelete($id)
+    {
+        $model = Area::findOne($id);
+
+        if (empty($model)) {
+            throw new HttpException(500);
+        }
+
+        $model->delete();
+
+        return $this->redirect(['manager/area-list']);
+    }
+
+    public function actionAreaList()
+    {
+        $models = Area::find()->all();
+        $archsites = ArrayHelper::map(Archsite::find()->all(),
+            'id', 'name');
+
+        return $this->render('area_list',
+        [
+            'models'=>$models,
+            'archsites'=>$archsites
+        ]);
+    }
 }
