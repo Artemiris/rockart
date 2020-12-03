@@ -7,6 +7,7 @@ use mihaildev\ckeditor\CKEditor;
 /* @var $this yii\web\View */
 /* @var $model common\models\Petroglyph */
 /* @var $form ActiveForm */
+/* @var $areas Array */
 ?>
 <div class="manager-_petroglyph_form">
 
@@ -14,6 +15,7 @@ use mihaildev\ckeditor\CKEditor;
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <?= $form->field($model, 'archsite_id')->dropDownList($archsites, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
+            <?= $form->field($model, 'area_id')->dropDownList($areas, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
             <?= $form->field($model, 'name') ?>
             <?= $form->field($model, 'name_en') ?>
             <?= $form->field($model, 'description')->widget(CKEditor::className(),

@@ -60,6 +60,8 @@ include_once "../../vendor/phpmorphy-0.3.7/src/common.php";
  * @property string $thumbnailImDrawing
  * @property string $thumbnailImReconstr
  * @property string $thumbnailImOverlay
+ *
+ * @property integer $area_id
  */
 class Petroglyph extends \yii\db\ActiveRecord
 {
@@ -101,6 +103,7 @@ class Petroglyph extends \yii\db\ActiveRecord
             ['method_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Method::className(), 'targetAttribute' => 'id'],
             ['style_ids', 'exist', 'allowArray' => true, 'skipOnError' => true, 'targetClass' => Style::className(), 'targetAttribute' => 'id'],
             ['archsite_id', 'exist', 'skipOnError' => true, 'targetClass' => Archsite::className(), 'targetAttribute' => 'id'],
+            ['area_id', 'exist', 'skipOnError' => true, 'targetClass' => Area::className(), 'targetAttribute' => 'id'],
             [['fileImage', 'fileDraw', 'fileReconstr', 'fileOverlay', 'fileDstr'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
         ];
     }
@@ -167,6 +170,7 @@ class Petroglyph extends \yii\db\ActiveRecord
             'culture_ids' => Yii::t('model', 'Cultures'),
             'epoch_ids' => Yii::t('model', 'Epochs'),
             'archsite_id' => Yii::t('model', 'Archsite'),
+            'area_id' => Yii::t('model', 'Area'),
             'public' => Yii::t('model', 'Published'),
             'index' => Yii::t('model', 'Index'),
             'technical_description' => Yii::t('model', 'Technical description'),
@@ -535,5 +539,10 @@ class Petroglyph extends \yii\db\ActiveRecord
             $this->uuid = UuidHelper::uuid();
         }
         return parent::beforeSave($insert);
+    }
+
+    public static function getAllOfArea($areaId)
+    {
+        return Petroglyph::find()->where(['area_id'=>$areaId])->all();
     }
 }

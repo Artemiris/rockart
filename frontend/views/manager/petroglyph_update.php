@@ -4,6 +4,7 @@
 /* @var $form yii\bootstrap\ActiveForm */
 
 /* @var $model \common\models\Petroglyph */
+/* @var $areas Array */
 
 use yii\helpers\Html;
 
@@ -24,4 +25,5 @@ $this->params['breadcrumbs'] = [
     'epochs' => $epochs,
     'methods' => $methods,
     'styles' => $styles,
+    'areas' => $areas
 ]) ?>
