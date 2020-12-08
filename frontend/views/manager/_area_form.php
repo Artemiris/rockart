@@ -59,12 +59,52 @@ use common\models\Area;
         </div>
 
         <div class="clearfix"></div>
+        <div class="col-xs-6">
+            <?= $form->field($model, 'publication')->widget(CKEditor::class,
+                [
+                    'editorOptions' => [
+                        'preset' => 'standard',
+                        'inline' => false,
+                    ],
+                    'options' => [
+                        'allowedContent' => true,
+                    ],
+
+                ]) ?>
+        </div>
+
+        <div class="col-xs-6">
+            <?= $form->field($model, 'publication_en')->widget(CKEditor::class,
+                [
+                    'editorOptions' => [
+                        'preset' => 'standard',
+                        'inline' => false,
+                    ],
+                    'options' => [
+                        'allowedContent' => true,
+                    ],
+
+                ]) ?>
+        </div>
+
+        <div class="clearfix"></div>
         <div class="col-xs-3">
             <?= $form->field($model, 'lat')->textInput() ?>
         </div>
         <div class="col-xs-3">
             <?= $form->field($model, 'lng')->textInput() ?>
         </div>
+        <div class="col-xs-6">
+            <?= $form->field($model, 'fileImage')->fileInput() ?>
+        </div>
+        <?php if (isset($model->id) and !empty($model->id)): ?>
+            <div class="col-xs-6">
+                <?= Html::img(Area::SRC_IMAGE . '/' . $model->thumbnailImage, ['class' => 'img-responsive']) ?>
+                <br>
+            </div>
+        <?php endif; ?>
+
+        <div class="clearfix"></div>
     </div>
 
     <div class="form-group">
