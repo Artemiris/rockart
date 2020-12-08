@@ -151,35 +151,6 @@ use yii\widgets\ActiveForm;
             </ul>
         </div>
         <div class="btn-group">
-            <button id="area_button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" value="area_all">
-                <?= Yii::t('app', 'All areas') ?> <span class="caret"></span>
-            </button>
-            <ul id="area_dropdown" class="dropdown-menu">
-                <li><a id="area_all" href="#"><?= Yii::t('app', 'All areas') ?></a></li>
-                <?php
-                $areasAll = ArrayHelper::map(\common\models\Area::find()->all(), 'id', 'name');
-                $areas = array();
-                foreach ($petroglyphs as $petroglyph) {
-                    if (!empty($petroglyph->area_id)) {
-
-                            if (!isset($areas[$petroglyph->area_id])) {
-                                $areas[$petroglyph->area_id]['id'] = $petroglyph->area_id;
-                                $areas[$petroglyph->area_id]['name'] = $areasAll[$petroglyph->area_id];
-                                $areas[$petroglyph->area_id]['count'] = 1;
-                            } else $areas[$petroglyph->area_id]['count']++;
-
-                    }
-                }
-                arsort($areas);
-                foreach ($areas as $area) {
-                    ?>
-                    <li><a href="#" id="area_<?= $area['id'] ?>"><?= $area['name'] ?> (<?= $area['count'] ?>
-                            )</a></li>
-                <?php } ?>
-            </ul>
-        </div>
-        <div class="btn-group">
             <input name="filter" type="text" class="form-control" placeholder="Search" value="<?= $filter ?>">
         </div>
         <div class="btn-group">
