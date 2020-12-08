@@ -1107,6 +1107,8 @@ class ManagerController extends Controller
         {
             if($model->save())
             {
+                $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
+                $model->upload();
                 \Yii::$app->session->setFlash('success', "Данные внесены");
                 return $this->redirect(['manager/area-update', 'id' => $model->id]);
             }
@@ -1135,6 +1137,8 @@ class ManagerController extends Controller
         {
             if($model->save())
             {
+                $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
+                $model->upload();
                 \Yii::$app->session->setFlash('success', "Данные внесены");
                 return $this->refresh();
             }
