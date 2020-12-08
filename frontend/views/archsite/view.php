@@ -1,9 +1,10 @@
 <?php
 
 /* @var $this yii\web\View */
-
+/* @var $areas Array */
 /* @var $archsite Archsite */
 
+use common\models\Area;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\models\Archsite;
@@ -18,14 +19,8 @@ $this->params['breadcrumbs'] = [
 
 ?>
 
-<?= $this->render('../layouts/_filter_bar', [
-    'petroglyphs' => $petroglyphs,
-    'filter' => $filter,
-]) ?>
-
 
 <?php
-
 $script = <<< JS
 
 $(document).ready(function () {
@@ -35,52 +30,6 @@ $(document).ready(function () {
         container.masonry({itemSelector: '.msnry'});
     });
 });
-
-function filter(){
-    var filter = ".petroglyph-card";
-    if ($('#epoch_button').val() != "epoch_all") filter += '.'+$('#epoch_button').val();
-    if ($('#culture_button').val() != "culture_all") filter += '.'+$('#culture_button').val();
-    if ($('#method_button').val() != "method_all") filter += '.'+$('#method_button').val();
-    if ($('#style_button').val() != "style_all") filter += '.'+$('#style_button').val();
-    if ($('#area_button').val() != "area_all") filter += '.'+$('#area_button').val();
-
-    $('.petroglyph-card').removeClass('msnry');
-    $('.collection').masonry('destroy');
-    $('.petroglyph-card').hide();
-    $(filter).addClass('msnry');
-    $(filter).show();
-    $('.collection').masonry({itemSelector: '.msnry'});
-
-}
-
-$(document).ready(function() {
-    $("#imagetype_dropdown li a").click(
-        function () { $('#imagetype_button').html($(this).text() + ' <span class="caret"></span>');
-        });
-    
-    $("#epoch_dropdown li a").click(function () {
-         $('#epoch_button').html($(this).text() + ' <span class="caret"></span>');
-         $('#epoch_button').val($(this).attr('id'));
-         filter()});
-    $("#culture_dropdown li a").click(function () {
-         $('#culture_button').html($(this).text() + ' <span class="caret"></span>');
-         $('#culture_button').val($(this).attr('id'));
-         filter()});
-    $("#method_dropdown li a").click(function () {
-         $('#method_button').html($(this).text() + ' <span class="caret"></span>');
-         $('#method_button').val($(this).attr('id'));
-         filter()});
-    $("#style_dropdown li a").click(function () {
-         $('#style_button').html($(this).text() + ' <span class="caret"></span>');
-         $('#style_button').val($(this).attr('id'));
-         filter()});
-    $("#area_dropdown li a").click(function () {
-         $('#area_button').html($(this).text() + ' <span class="caret"></span>');
-         $('#area_button').val($(this).attr('id'));
-         filter()}); 
-});
-
-
 JS;
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
@@ -150,7 +99,26 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
 <?php endif; ?>
 
 <div class="clearfix"></div>
-
+<?php if (!empty($areas)): ?>
+    <h2><?= Yii::t('app', 'Areas') ?></h2>
+    <div class="row collection" id="area_container">
+        <?php foreach ($areas as $area): ?>
+        <div id="area_card_<?= $area->id?>" class="col-xs-12 col-sm-4 col-md-3 msnry">
+            <a href="<?= Url::to(['area/view', 'id'=>$area->id]) ?>" class="petroglyph-item">
+                <div class="row" id="<?= $area->id ?>">
+                    <?php if (!empty($area->image)): ?>
+                    <div class="image-origin" style="display: block">
+                        <?= Html::img(Area::SRC_IMAGE . '/' . $area->thumbnailImage, ['class' => 'img-responsive']) ?>
+                    </div>
+                    <?php endif; ?>
+                    <h4><?= $area->name ?></h4>
+                </div>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+<div class="clearfix"></div>
 <?php if (!empty($petroglyphs)): ?>
     <h2><?= Yii::t('app', 'Panels') ?></h2>
     <div class="row collection" id="petroglyph_container">
@@ -165,7 +133,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
             ?>
             <div id="card_<?=$petroglyph->id?>" class="petroglyph-card <?= $class?> col-xs-12 col-sm-4 col-md-3 msnry">
                 <?php if (!empty($petroglyph->image)): ?>
-                    
+
                     <a href="<?= Url::to(['petroglyph/view', 'id' => $petroglyph->id]) ?>" class="petroglyph-item" >
                         <div class="row" id="<?=$petroglyph->id?>">
                             <div class="image-origin" style="display:block">
@@ -192,14 +160,14 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
                                 </div>
                             <?php endif; ?>
                         </div>
-                        
+
                         <h4>
                             <?php if (!empty($petroglyph->index)):?><?= $petroglyph->index ?>. <?endif?><?= $petroglyph->name ?>
                         </h4>
                         <?/*= $petroglyph->annotation */?>
                     </a>
                 <?php endif; ?>
-                
+
             </div>
         <?php endforeach; ?>
     </div>

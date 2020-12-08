@@ -174,6 +174,16 @@ class Archsite extends ActiveRecord
         return $query;
     }
 
+    public function getPetroglyphsWithoutArea()
+    {
+        $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id']);
+        $query->where(['deleted' => null])->andWhere(['area_id'=>null])->orderBy(['id' => SORT_DESC]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+        return $query;
+    }
+
     public function searchPetroglyphs($search)
     {
         $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id'])->join('LEFT JOIN', 'petroglyph_language', 'petroglyph_language.petroglyph_id = petroglyph.id');

@@ -4,8 +4,11 @@
 namespace common\models;
 
 
+use Imagine\Image\Box;
 use omgdef\multilingual\MultilingualBehavior;
 use omgdef\multilingual\MultilingualQuery;
+use yii\helpers\FileHelper;
+use yii\imagine\Image;
 
 /**
  * Class Area
@@ -15,6 +18,8 @@ use omgdef\multilingual\MultilingualQuery;
  * @property string $name_en
  * @property string $description
  * @property string $description_en
+ * @property string $publication
+ * @property string $publication_en
  * @property integer $archsite_id
  * @property double $lat
  * @property double $lng
@@ -25,8 +30,20 @@ class Area extends \yii\db\ActiveRecord
     const DIR_IMAGE = 'storage/web/area';
     const SRC_IMAGE = '/storage/area';
     const SCENARIO_CREATE = 'create';
+    const THUMBNAIL_PREFIX = 'thumbnail_';
+    const THUMBNAIL_W = 800;
+    const THUMBNAIL_H = 500;
 
     public $fileImage;
+
+    private static function basePath()
+    {
+        $path = \Yii::getAlias('@' . self::DIR_IMAGE);
+
+        FileHelper::createDirectory($path);
+
+        return $path;
+    }
 
     public function behaviors()
     {
@@ -44,6 +61,7 @@ class Area extends \yii\db\ActiveRecord
                 'attributes' => [
                     'name',
                     'description',
+                    'publication'
                 ]
             ],
         ];
@@ -53,7 +71,7 @@ class Area extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'name_en', 'archsite_id'], 'required'],
-            [['name', 'description'], 'string'],
+            [['name', 'description','publication'], 'string'],
             [['lat', 'lng'], 'double'],
             ['image', 'string'],
             [['fileImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
@@ -68,7 +86,7 @@ class Area extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE] = ['name', 'description', 'image', 'lat', 'lng', 'archsite_id'];
+        $scenarios[self::SCENARIO_CREATE] = ['name', 'description', 'publication', 'image', 'lat', 'lng', 'archsite_id'];
 
         return $scenarios;
     }
@@ -84,12 +102,70 @@ class Area extends \yii\db\ActiveRecord
             'fileImage' => 'Изображение',
             'archsite_id' => 'Памятник',
             'lat' => 'Широта',
-            'lng' => 'Долгота'
+            'lng' => 'Долгота',
+            'publication' => 'Публикации',
+            'publication_en' => 'Публикации на английском'
         ];
     }
 
-    public function findAllOfSite($id)
+    public function upload()
+    {
+        if ($this->validate() and !empty($this->fileImage)) {
+
+            $path = self::basePath();
+
+            if (!empty($this->image) and file_exists($path . '/' . $this->image)) {
+                unlink($path . '/' . $this->image);
+
+                if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->image)) {
+                    unlink($path . '/' . self::THUMBNAIL_PREFIX . $this->image);
+                }
+            }
+
+            FileHelper::createDirectory($path);
+
+            $newName = md5(uniqid($this->id));
+            $this->fileImage->saveAs($path . '/' . $newName . '.' . $this->fileImage->extension);
+            $this->image = $newName . '.' . $this->fileImage->extension;
+
+            $sizes = getimagesize($path . '/' . $newName . '.' . $this->fileImage->extension);
+            if ($sizes[0] > self::THUMBNAIL_W) {
+                Image::thumbnail($path . '/' . $newName . '.' . $this->fileImage->extension, self::THUMBNAIL_W, self::THUMBNAIL_H)
+                    ->resize(new Box(self::THUMBNAIL_W, self::THUMBNAIL_H))
+                    ->save($path . '/' . self::THUMBNAIL_PREFIX . $newName . '.' . $this->fileImage->extension, ['quality' => 80]);
+            }
+
+            $this->scenario = self::SCENARIO_CREATE;
+            return $this->save();
+        } else {
+            return false;
+        }
+    }
+
+    public function getThumbnailImage()
+    {
+        $path = self::basePath();
+
+        if (file_exists($path . '/' . self::THUMBNAIL_PREFIX . $this->image)) {
+            return self::THUMBNAIL_PREFIX . $this->image;
+        } else {
+            return $this->image;
+        }
+    }
+
+    public static function findAllOfSite($id)
     {
         return self::find()->where(['archsite_id' => $id])->all();
+    }
+
+    public function beforeDelete()
+    {
+        $baseDir = self::basePath();
+
+        if (!empty($this->image) and file_exists($baseDir . '/' . $this->image)) {
+            unlink($baseDir . '/' . $this->image);
+        }
+
+        return parent::beforeDelete();
     }
 }

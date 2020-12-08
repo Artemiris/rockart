@@ -2,6 +2,8 @@
 namespace frontend\controllers;
 
 use common\models\Archsite;
+use common\models\Area;
+use common\models\Petroglyph;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -38,22 +40,17 @@ class ArchsiteController extends Controller
 
     public function actionView($id)
     {
-       $archsite = Archsite::findOne($id);
-
+        $archsite = Archsite::findOne($id);
+        $areas = Area::findAllOfSite($id);
         if (empty($archsite)) {
             throw new HttpException(404);
         }
-        $petroglyphs = null;
-
-        if ($filter = Yii::$app->request->get('filter')) {
-            $petroglyphs = $archsite->searchPetroglyphs(mb_strtoupper($filter))->all();
-        }
-        else $petroglyphs = $archsite->petroglyphs;
+        $petroglyphs = $archsite->petroglyphsWithoutArea;
 
         return $this->render('view', [
             'archsite' => $archsite,
             'petroglyphs' => $petroglyphs,
-            'filter' => $filter
+            'areas' => $areas,
         ]);
     }
 }
