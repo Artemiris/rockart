@@ -68,7 +68,12 @@ class PetroglyphController extends BaseController
         $json_petroglyphs = null;
         $inherit_coords = '';
         if (!$petroglyph->lat || !$petroglyph->lng){
-            if ($petroglyph->archsite->lat && $petroglyph->archsite->lng){
+            $area = $petroglyph->area;
+            if($area && $area->lat && $area->lng){
+                $petroglyph->lat = $area->lat;
+                $petroglyph->lng = $area->lng;
+                $inherit_coords = 'area';
+            } else if ($petroglyph->archsite->lat && $petroglyph->archsite->lng){
                 $petroglyph->lat = $petroglyph->archsite->lat;
                 $petroglyph->lng = $petroglyph->archsite->lng;
                 $inherit_coords = 'archsite';
