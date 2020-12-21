@@ -41,7 +41,7 @@ class ArchsiteController extends Controller
     public function actionView($id)
     {
         $archsite = Archsite::findOne($id);
-        $areas = Area::findAllOfSite($id);
+        $areas = $archsite->areas;
         if (empty($archsite)) {
             throw new HttpException(404);
         }

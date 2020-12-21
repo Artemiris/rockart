@@ -174,6 +174,14 @@ class Archsite extends ActiveRecord
         return $query;
     }
 
+    /**
+     * @return ActiveRecord[]
+     */
+    public function getAreas()
+    {
+        return Area::find()->where(['archsite_id'=>$this->id])->all();
+    }
+
     public function getPetroglyphsWithoutArea()
     {
         $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id']);
