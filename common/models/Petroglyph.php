@@ -281,6 +281,12 @@ class Petroglyph extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Archsite::className(), ['id' => 'archsite_id']);
     }
+
+    public function getArea()
+    {
+        return Area::find()->where(['id'=>$this->area_id])->one();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
