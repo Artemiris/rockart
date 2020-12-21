@@ -15,7 +15,9 @@ use mihaildev\ckeditor\CKEditor;
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <?= $form->field($model, 'archsite_id')->dropDownList($archsites, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
+            <?php if (!empty($areas)): ?>
             <?= $form->field($model, 'area_id')->dropDownList($areas, ['prompt'=>Yii::t('manager', 'Select...')]) ?>
+            <?php endif; ?>
             <?= $form->field($model, 'name') ?>
             <?= $form->field($model, 'name_en') ?>
             <?= $form->field($model, 'description')->widget(CKEditor::className(),
