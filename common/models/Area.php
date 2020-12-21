@@ -7,6 +7,7 @@ namespace common\models;
 use Imagine\Image\Box;
 use omgdef\multilingual\MultilingualBehavior;
 use omgdef\multilingual\MultilingualQuery;
+use Yii;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
 
@@ -156,6 +157,19 @@ class Area extends \yii\db\ActiveRecord
     public static function findAllOfSite($id)
     {
         return self::find()->where(['archsite_id' => $id])->all();
+    }
+
+    /**
+     * @return \yii\db\ActiveRecord[]
+     */
+    public function getPetroglyphs()
+    {
+        $query = Petroglyph::find()->where(['area_id'=>$this->id]);
+        $query->andWhere(['deleted' => null])->orderBy(['id' => SORT_DESC]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+        return $query->all();
     }
 
     public function beforeDelete()
