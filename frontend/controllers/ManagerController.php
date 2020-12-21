@@ -14,6 +14,7 @@ use common\models\Archsite;
 use common\models\Composition;
 
 use yii\data\ActiveDataProvider;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -535,7 +536,6 @@ class ManagerController extends Controller
         $model = new Petroglyph();
 
         $archsites = ArrayHelper::map(Archsite::find()->all(), 'id', 'name');
-        $areas = ArrayHelper::map(Area::find()->all(), 'id', 'name');
 
         $cultures = ArrayHelper::map(Culture::find()->all(), 'id', 'name');
         $epochs = ArrayHelper::map(Epoch::find()->all(), 'id', 'name');
@@ -566,7 +566,6 @@ class ManagerController extends Controller
             'epochs' => $epochs,
             'methods' => $methods,
             'styles' => $styles,
-            'areas' => $areas
         ]);
     }
 
@@ -1159,8 +1158,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        $model->delete();
-
+        try
+        {
+            $model->delete();
+        }
+        catch (Exception $exception)
+        {
+            \Yii::$app->session->setFlash('error', "Не удалось удалить участок<br>Проверьте, что на участке не осталось плоскостей");
+            return $this->redirect(['manager/'.$model->id.'/area-update/']);
+        }
         return $this->redirect(['manager/area-list']);
     }
 
