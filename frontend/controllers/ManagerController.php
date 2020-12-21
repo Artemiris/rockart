@@ -982,7 +982,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        $model->delete();
+        try
+        {
+            $model->delete();
+        }
+        catch (Exception $exception)
+        {
+            \Yii::$app->session->setFlash('error', "Не удалось удалить памятник<br>Проверьте, что на памятнике не осталось участков");
+            return $this->redirect(['manager/'.$model->id.'/archsite-update/']);
+        }
 
         return $this->redirect(['manager/archsite']);
     }
