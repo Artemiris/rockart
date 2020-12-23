@@ -1,9 +1,3 @@
-<?php
-
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
-
-?>
 
 <div class="container-fluid">
     <div class="row form-group">
