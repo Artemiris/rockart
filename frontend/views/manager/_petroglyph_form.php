@@ -1,5 +1,11 @@
 <?php
 
+use common\models\Archsite;
+use common\models\Area;
+use common\models\Culture;
+use common\models\Epoch;
+use common\models\Method;
+use common\models\Style;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -8,12 +14,12 @@ use mihaildev\ckeditor\CKEditor;
 /* @var $this yii\web\View */
 /* @var $model common\models\Petroglyph */
 /* @var $form ActiveForm */
-/* @var $areas Array */
-/* @var $archsites Array */
-/* @var $cultures Array */
-/* @var $epochs Array */
-/* @var $methods Array */
-/* @var $styles Array */
+/* @var $areas Area[] */
+/* @var $archsites Archsite[] */
+/* @var $cultures Culture[] */
+/* @var $epochs Epoch[] */
+/* @var $methods Method[] */
+/* @var $styles Style[] */
 ?>
 <div class="manager-_petroglyph_form">
 
