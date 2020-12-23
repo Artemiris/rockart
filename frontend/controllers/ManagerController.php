@@ -1182,6 +1182,21 @@ class ManagerController extends Controller
 
     public function actionAreaList()
     {
+        if(Yii::$app->request->isAjax)
+        {
+            $id = (int)Yii::$app->request->post('id');
+            $archsite = Archsite::find()->where(['id'=>$id])->one();
+            $areas = $archsite->areas;
+            if(!empty($areas)) {
+                $option = '<option value>'.Yii::t('manager', 'Select...').'</option>';
+                foreach ($areas as $area) {
+                    $option .= '<option value="' . $area->id . '">' . $area->name . '</option>';
+                }
+            }else{
+                $option = '<option value>'.Yii::t('manager', 'No areas on this site').'</option>';
+            }
+            return $option;
+        }
         $models = Area::find()->all();
         $archsites = ArrayHelper::map(Archsite::find()->all(),
             'id', 'name');
