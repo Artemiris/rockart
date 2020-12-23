@@ -13,6 +13,7 @@ use common\models\PetroglyphThreeD;
 use common\models\Archsite;
 use common\models\Composition;
 
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use yii\filters\AccessControl;
@@ -86,15 +87,15 @@ class ManagerController extends Controller
     {
         $model = new Culture();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/culture-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('culture_create', [
@@ -133,15 +134,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -168,7 +169,7 @@ class ManagerController extends Controller
         if (empty($model->petroglyphs)) {
             $model->delete();
         } else {
-            \Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
+            Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
         }
 
         return $this->redirect(['manager/culture']);
@@ -197,15 +198,15 @@ class ManagerController extends Controller
     {
         $model = new Epoch();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/epoch-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('epoch_create', [
@@ -244,15 +245,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -279,7 +280,7 @@ class ManagerController extends Controller
         if (empty($model->petroglyphs)) {
             $model->delete();
         } else {
-            \Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
+            Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
         }
 
         return $this->redirect(['manager/epoch']);
@@ -308,15 +309,15 @@ class ManagerController extends Controller
     {
         $model = new Method();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/method-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('method_create', [
@@ -355,15 +356,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -390,7 +391,7 @@ class ManagerController extends Controller
         if (empty($model->petroglyphs)) {
             $model->delete();
         } else {
-            \Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
+            Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
         }
 
         return $this->redirect(['manager/method']);
@@ -419,15 +420,15 @@ class ManagerController extends Controller
     {
         $model = new Style();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/style-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('style_create', [
@@ -466,15 +467,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -501,7 +502,7 @@ class ManagerController extends Controller
         if (empty($model->petroglyphs)) {
             $model->delete();
         } else {
-            \Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
+            Yii::$app->session->setFlash('error', 'Невозможно удалить, так как к нему использвется в петроглифах');
         }
 
         return $this->redirect(['manager/style']);
@@ -514,7 +515,7 @@ class ManagerController extends Controller
     {
         $query = Petroglyph::find()->orderBy(['created_at' => SORT_DESC]);
 
-        if (!\Yii::$app->request->get('showDeleted')) {
+        if (!Yii::$app->request->get('showDeleted')) {
             $query->where(['deleted' => null]);
         }
         $provider = new ActiveDataProvider([
@@ -542,21 +543,21 @@ class ManagerController extends Controller
         $methods = ArrayHelper::map(Method::find()->all(), 'id', 'name');
         $styles = ArrayHelper::map(Style::find()->all(), 'id', 'name');
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                $model->setCultures(\Yii::$app->request->post('Petroglyph')['culture_ids']);
-                $model->setEpochs(\Yii::$app->request->post('Petroglyph')['epoch_ids']);
-                $model->setMethods(\Yii::$app->request->post('Petroglyph')['method_ids']);
-                $model->setStyles(\Yii::$app->request->post('Petroglyph')['style_ids']);
+                $model->setCultures(Yii::$app->request->post('Petroglyph')['culture_ids']);
+                $model->setEpochs(Yii::$app->request->post('Petroglyph')['epoch_ids']);
+                $model->setMethods(Yii::$app->request->post('Petroglyph')['method_ids']);
+                $model->setStyles(Yii::$app->request->post('Petroglyph')['style_ids']);
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('petroglyph_create', [
@@ -638,24 +639,24 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
-                $model->setCultures(\Yii::$app->request->post('Petroglyph')['culture_ids']);
-                $model->setEpochs(\Yii::$app->request->post('Petroglyph')['epoch_ids']);
-                $model->setMethods(\Yii::$app->request->post('Petroglyph')['method_ids']);
-                $model->setStyles(\Yii::$app->request->post('Petroglyph')['style_ids']);
+                $model->setCultures(Yii::$app->request->post('Petroglyph')['culture_ids']);
+                $model->setEpochs(Yii::$app->request->post('Petroglyph')['epoch_ids']);
+                $model->setMethods(Yii::$app->request->post('Petroglyph')['method_ids']);
+                $model->setStyles(Yii::$app->request->post('Petroglyph')['style_ids']);
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->fileDstr = UploadedFile::getInstance($model, 'fileDstr');
                 $model->fileDraw = UploadedFile::getInstance($model, 'fileDraw');
                 $model->fileReconstr = UploadedFile::getInstance($model, 'fileReconstr');
                 $model->fileOverlay = UploadedFile::getInstance($model, 'fileOverlay');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -712,16 +713,16 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-view', 'id' => $petroglyph->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('petroglyph_image_create', [
@@ -761,17 +762,17 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-image-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -815,14 +816,14 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-view', 'id' => $petroglyph->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('petroglyph_three_d_create', [
@@ -862,15 +863,15 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/petroglyph-three-d-view', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -918,17 +919,17 @@ class ManagerController extends Controller
     {
         $model = new Archsite();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/archsite-update', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('archsite_create', [
@@ -948,17 +949,17 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
 
             if ($model->save()) {
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -988,7 +989,8 @@ class ManagerController extends Controller
         }
         catch (Exception $exception)
         {
-            \Yii::$app->session->setFlash('error', "Не удалось удалить памятник<br>Проверьте, что на памятнике не осталось участков");
+            Yii::$app->session->setFlash('error', "Не удалось удалить памятник<br>
+                                                                Проверьте, что на памятнике не осталось участков или плоскостей");
             return $this->redirect(['manager/'.$model->id.'/archsite-update/']);
         }
 
@@ -1034,17 +1036,17 @@ class ManagerController extends Controller
         if (empty($petroglyph)) {
             throw new HttpException(500);
         }
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->redirect(['manager/composition-update', 'id' => $model->id]);
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('composition_create', [
@@ -1065,17 +1067,17 @@ class ManagerController extends Controller
             throw new HttpException(500);
         }
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
 
             if ($model->save()) {
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
 
                 return $this->refresh();
             }
 
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
 
@@ -1110,16 +1112,16 @@ class ManagerController extends Controller
         $archsites = ArrayHelper::map(Archsite::find()->all(),
             'id', 'name');
 
-        if($model->load(\Yii::$app->request->post()))
+        if($model->load(Yii::$app->request->post()))
         {
             if($model->save())
             {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
                 return $this->redirect(['manager/area-update', 'id' => $model->id]);
             }
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('area_create',[
@@ -1140,16 +1142,16 @@ class ManagerController extends Controller
         $archsites = ArrayHelper::map(Archsite::find()->all(),
             'id', 'name');
 
-        if($model->load(\Yii::$app->request->post()))
+        if($model->load(Yii::$app->request->post()))
         {
             if($model->save())
             {
                 $model->fileImage = UploadedFile::getInstance($model, 'fileImage');
                 $model->upload();
-                \Yii::$app->session->setFlash('success', "Данные внесены");
+                Yii::$app->session->setFlash('success', "Данные внесены");
                 return $this->refresh();
             }
-            \Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
+            Yii::$app->session->setFlash('error', "Не удалось сохранить изменения<br>" . print_r($model->errors, true));
         }
 
         return $this->render('area_update',[
@@ -1172,7 +1174,7 @@ class ManagerController extends Controller
         }
         catch (Exception $exception)
         {
-            \Yii::$app->session->setFlash('error', "Не удалось удалить участок<br>Проверьте, что на участке не осталось плоскостей");
+            Yii::$app->session->setFlash('error', "Не удалось удалить участок<br>Проверьте, что на участке не осталось плоскостей");
             return $this->redirect(['manager/'.$model->id.'/area-update/']);
         }
         return $this->redirect(['manager/area-list']);
