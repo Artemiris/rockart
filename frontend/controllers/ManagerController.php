@@ -989,8 +989,8 @@ class ManagerController extends Controller
         }
         catch (Exception $exception)
         {
-            Yii::$app->session->setFlash('error', "Не удалось удалить памятник<br>
-                                                                Проверьте, что на памятнике не осталось участков или плоскостей");
+            Yii::$app->session->setFlash('error', Yii::t('manager','Fail to delete site')."<br>".
+                                                            Yii::t('manager','There is petroglyphs or areas on this site'));
             return $this->redirect(['manager/'.$model->id.'/archsite-update/']);
         }
 
@@ -1174,7 +1174,7 @@ class ManagerController extends Controller
         }
         catch (Exception $exception)
         {
-            Yii::$app->session->setFlash('error', "Не удалось удалить участок<br>Проверьте, что на участке не осталось плоскостей");
+            Yii::$app->session->setFlash('error', Yii::t('manager','Fail to delete area')."<br>".Yii::t('manager', 'There is petroglyphs on this area'));
             return $this->redirect(['manager/'.$model->id.'/area-update/']);
         }
         return $this->redirect(['manager/area-list']);
