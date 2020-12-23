@@ -16,10 +16,11 @@ $this->params['breadcrumbs'] = [
     ['label' => Yii::t('app', 'Sites'), 'url' => ['archsite/index']],
     $this->title,
 ];
-
 ?>
-
-
+<?= !empty($petroglyphs) ? $this->render('../layouts/_filter_bar', [
+    'petroglyphs' => $petroglyphs,
+    'filter' => $filter,
+]) : '' ?>
 <?php
 $script = <<< JS
 
@@ -30,12 +31,56 @@ $(document).ready(function () {
         container.masonry({itemSelector: '.msnry'});
     });
 });
+
 JS;
+
+$script2 = <<< JS
+function filter(){
+    var filter = ".petroglyph-card";
+    if ($('#epoch_button').val() !== "epoch_all") filter += '.'+$('#epoch_button').val();
+    if ($('#culture_button').val() !== "culture_all") filter += '.'+$('#culture_button').val();
+    if ($('#method_button').val() !== "method_all") filter += '.'+$('#method_button').val();
+    if ($('#style_button').val() !== "style_all") filter += '.'+$('#style_button').val();
+
+    $('.petroglyph-card').removeClass('msnry');
+    $('.collection').masonry('destroy');
+    $('.petroglyph-card').hide();
+    $(filter).addClass('msnry');
+    $(filter).show();
+    $('.collection').masonry({itemSelector: '.msnry'});
+
+}
+
+$(document).ready(function() {
+    $("#imagetype_dropdown li a").click(
+        function () { $('#imagetype_button').html($(this).text() + ' <span class="caret"></span>');
+        });
+    
+    $("#epoch_dropdown li a").click(function () {
+         $('#epoch_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#epoch_button').val($(this).attr('id'));
+         filter()});
+    $("#culture_dropdown li a").click(function () {
+         $('#culture_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#culture_button').val($(this).attr('id'));
+         filter()});
+    $("#method_dropdown li a").click(function () {
+         $('#method_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#method_button').val($(this).attr('id'));
+         filter()});
+    $("#style_dropdown li a").click(function () {
+         $('#style_button').html($(this).text() + ' <span class="caret"></span>');
+         $('#style_button').val($(this).attr('id'));
+         filter()});
+});
+JS;
+
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/archsitemanage.js?20200501');
 $this->registerJs($script, yii\web\View::POS_READY);
+if(!empty($petroglyphs)) $this->registerJs($script2, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 ?>
