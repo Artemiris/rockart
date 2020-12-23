@@ -2,19 +2,8 @@
 namespace frontend\controllers;
 
 use common\models\Archsite;
-use common\models\Area;
-use common\models\Petroglyph;
-use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use yii\web\HttpException;
 
 
 /**
@@ -41,10 +30,11 @@ class ArchsiteController extends Controller
     public function actionView($id)
     {
         $archsite = Archsite::findOne($id);
-        $areas = $archsite->areas;
+
         if (empty($archsite)) {
             throw new HttpException(404);
         }
+        $areas = $archsite->areas;
         $petroglyphs = $archsite->petroglyphsWithoutArea;
 
         return $this->render('view', [
