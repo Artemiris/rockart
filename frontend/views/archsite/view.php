@@ -17,7 +17,7 @@ $this->params['breadcrumbs'] = [
     $this->title,
 ];
 ?>
-<?= !empty($petroglyphs) ? $this->render('../layouts/_filter_bar', [
+<?= $numPet > 0 ? $this->render('../layouts/_filter_bar', [
     'petroglyphs' => $petroglyphs,
     'filter' => $filter,
 ]) : '' ?>
@@ -80,7 +80,7 @@ $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\boo
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/archsitemanage.js?20200501');
 $this->registerJs($script, yii\web\View::POS_READY);
-if(!empty($petroglyphs)) $this->registerJs($script2, yii\web\View::POS_READY);
+if($numPet) $this->registerJs($script2, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 ?>

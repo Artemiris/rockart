@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Archsite;
+use Yii;
 use yii\web\Controller;
 use yii\web\HttpException;
 
@@ -35,12 +36,18 @@ class ArchsiteController extends Controller
             throw new HttpException(404);
         }
         $areas = $archsite->areas;
-        $petroglyphs = $archsite->petroglyphsWithoutArea;
+        $numPet = $archsite->petroglyphsWithoutAreaCount;
+        if ($filter = Yii::$app->request->get('filter')) {
+            $petroglyphs = $archsite->searchPetroglyphsWithoutArea(mb_strtoupper($filter))->all();
+        }
+        else $petroglyphs = $archsite->petroglyphsWithoutArea;
 
         return $this->render('view', [
             'archsite' => $archsite,
             'petroglyphs' => $petroglyphs,
             'areas' => $areas,
+            'filter' => $filter,
+            'numPet' => $numPet
         ]);
     }
 }

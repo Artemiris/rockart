@@ -192,10 +192,45 @@ class Archsite extends ActiveRecord
         return $query;
     }
 
+    public function getPetroglyphsWithoutAreaCount()
+    {
+        $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id']);
+        $query->where(['deleted' => null])->andWhere(['area_id'=>null]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+        return $query->count();
+    }
+
     public function searchPetroglyphs($search)
     {
         $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id'])->join('LEFT JOIN', 'petroglyph_language', 'petroglyph_language.petroglyph_id = petroglyph.id');
         $query->where(['deleted' => null])->andWhere(['locale' => Yii::$app->language])->orderBy(['id' => SORT_DESC]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+
+        $dir = '../../vendor/phpmorphy-0.3.7/dicts';
+        if (Yii::$app->language == "ru") $lang = 'ru_RU';
+        else $lang = 'en_EN';
+        $opts = array(
+            'storage' => PHPMORPHY_STORAGE_FILE,
+        );
+        try {
+            $morphy = new \phpMorphy($dir, $lang, $opts);
+        } catch(phpMorphy_Exception $e) {
+            die('Error occured while creating phpMorphy instance: ' . $e->getMessage());
+        }
+        $forms = $morphy->getAllForms($search);
+        if (empty($forms)) $forms = $search;
+        $query = $query->andWhere(['or',['or like', 'description', $forms], ['or like', 'name', $forms]]);
+        return $query;
+    }
+
+    public function searchPetroglyphsWithoutArea($search)
+    {
+        $query = $this->hasMany(Petroglyph::className(), ['archsite_id' => 'id'])->join('LEFT JOIN', 'petroglyph_language', 'petroglyph_language.petroglyph_id = petroglyph.id');
+        $query->where(['deleted' => null])->andWhere(['locale' => Yii::$app->language])->andWhere(['area_id' => null])->orderBy(['id' => SORT_DESC]);
         if (!Yii::$app->user->can('manager')) {
             $query->andWhere(['public' => 1]);
         }
