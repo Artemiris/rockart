@@ -546,9 +546,4 @@ class Petroglyph extends \yii\db\ActiveRecord
         }
         return parent::beforeSave($insert);
     }
-
-    public static function getAllOfArea($areaId)
-    {
-        return Petroglyph::find()->where(['area_id'=>$areaId])->all();
-    }
 }

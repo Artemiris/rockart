@@ -154,11 +154,6 @@ class Area extends \yii\db\ActiveRecord
         }
     }
 
-    public static function findAllOfSite($id)
-    {
-        return self::find()->where(['archsite_id' => $id])->all();
-    }
-
     /**
      * @return \yii\db\ActiveRecord[]
      */
