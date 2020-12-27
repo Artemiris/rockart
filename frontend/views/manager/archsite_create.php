@@ -11,10 +11,10 @@ use yii\captcha\Captcha;
 use common\models\News;
 use mihaildev\ckeditor\CKEditor;
 
-$this->title = 'Добавление памятника';
+$this->title = Yii::t('manager', 'New archsite');
 $this->params['breadcrumbs'] = [
-    ['label' => 'Управление контентом', 'url' => ['/manager/index']],
-    ['label' => 'Памятники', 'url' => ['/manager/archsite']],
+    ['label' => Yii::t('app', 'Management'), 'url' => ['/manager/index']],
+    ['label' => Yii::t('model', 'Archsites'), 'url' => ['/manager/archsite']],
     $this->title,
 ];
 

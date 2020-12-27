@@ -148,16 +148,16 @@ class Archsite extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Название',
-            'name_en' => 'Название на английском',
-            'description' => 'Описание',
-            'description_en' => 'Описание на английском',
-            'publication' => 'Публикации',
-            'publication_en' => 'Публикации на английском',
-            'image' => 'Изображение',
-            'fileImage' => 'Изображение',
-            'index' => 'Индекс',
-            'registry_num' => 'Номер по госреестру',
+            'name' => Yii::t('model', 'Name in Russian'),
+            'name_en' => Yii::t('model', 'Name in English'),
+            'description' => Yii::t('model', 'Description in Russian'),
+            'description_en' => Yii::t('model', 'Description in English'),
+            'publication' => Yii::t('model', 'Publication'),
+            'publication_en' => Yii::t('model', 'Publication in English'),
+            'image' => Yii::t('model', 'Image'),
+            'fileImage' => Yii::t('model', 'Image'),
+            'index' => Yii::t('model', 'Index'),
+            'registry_num' => Yii::t('model', 'State registry number'),
         ];
     }
 

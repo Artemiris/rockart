@@ -95,17 +95,17 @@ class Area extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Название',
-            'name_en' => 'Название на английском',
-            'description' => 'Описание',
-            'description_en' => 'Описание на английском',
-            'image' => 'Изображение',
-            'fileImage' => 'Изображение',
-            'archsite_id' => 'Памятник',
-            'lat' => 'Широта',
-            'lng' => 'Долгота',
-            'publication' => 'Публикации',
-            'publication_en' => 'Публикации на английском'
+            'name' => Yii::t('model', 'Name in Russian'),
+            'name_en' => Yii::t('model', 'Name in English'),
+            'description' => Yii::t('model', 'Description in Russian'),
+            'description_en' => Yii::t('model', 'Description in English'),
+            'lat' => Yii::t('model', 'Latitude'),
+            'lng' => Yii::t('model', 'Longitude'),
+            'image' => Yii::t('model', 'Image'),
+            'fileImage' => Yii::t('model', 'Image'),
+            'archsite_id' => Yii::t('model', 'Archsite'),
+            'publication' => Yii::t('model', 'Publication'),
+            'publication_en' => Yii::t('model', 'Publication in English'),
         ];
     }
 

@@ -11,10 +11,10 @@ use yii\captcha\Captcha;
 use common\models\News;
 use mihaildev\ckeditor\CKEditor;
 
-$this->title = 'Добавление участка';
+$this->title = Yii::t('manager', 'New area');
 $this->params['breadcrumbs'] = [
-    ['label' => 'Управление контентом', 'url' => ['/manager/index']],
-    ['label' => 'Участки', 'url' => ['/manager/area-list']],
+    ['label' => Yii::t('app', 'Management'), 'url' => ['/manager/index']],
+    ['label' => Yii::t('model', 'Areas'), 'url' => ['/manager/area-list']],
     $this->title,
 ];
 

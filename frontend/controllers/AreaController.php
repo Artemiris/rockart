@@ -4,6 +4,7 @@
 namespace frontend\controllers;
 
 use common\models\Area;
+use Yii;
 use yii\web\HttpException;
 
 class AreaController extends \yii\web\Controller
