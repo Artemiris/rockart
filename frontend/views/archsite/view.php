@@ -3,6 +3,8 @@
 /* @var $this yii\web\View */
 /* @var $areas Array */
 /* @var $archsite Archsite */
+/* @var $numPet Integer */
+/* @var $petroglyphs Petroglyph[]*/
 
 use common\models\Area;
 use yii\helpers\Html;
@@ -156,8 +158,8 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
                         <?= Html::img(Area::SRC_IMAGE . '/' . $area->thumbnailImage, ['class' => 'img-responsive']) ?>
                     </div>
                     <?php endif; ?>
-                    <h4><?= $area->name ?></h4>
                 </div>
+                <h4><?= $area->name ?></h4>
             </a>
         </div>
         <?php endforeach; ?>
