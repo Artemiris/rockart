@@ -1,10 +1,12 @@
 <?php
 
 /* @var $this yii\web\View */
+/* @var $models Array */
+/* @var $archsites Array */
 
 use yii\helpers\Html;
 
-$this->title = Yii::t('manager', 'Archsites');
+$this->title = Yii::t('app', 'Areas');
 $this->params['breadcrumbs'] = [
     ['label' => Yii::t('manager', 'Management'), 'url' => ['/manager/index']],
     $this->title,
@@ -15,23 +17,24 @@ $this->params['breadcrumbs'] = [
 
 <div class="clearfix">
     <div class="pull-right">
-        <?= Html::a(Yii::t('manager', 'Add archsite'), ['manager/archsite-create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Add area'), ['manager/area-create'], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
 
 <br>
 
-<?php if (!empty($archsites)): ?>
+<?php if (!empty($models)): ?>
     <table class="table table-responsive table-hover">
         <thead>
         <tr>
             <th>№</th>
             <th><?=Yii::t('manager', 'Name')?></th>
+            <th><?=Yii::t('manager', 'Archsite')?></th>
             <th></th>
         </tr>
         </thead>
-        <?php /** @var \common\models\Archsite $item */
-        foreach ($archsites as $i => $item): ?>
+        <?php /** @var \common\models\Area $item */
+        foreach ($models as $i => $item): ?>
             <tr>
                 <td>
                     <?= ($i + 1) ?>
@@ -39,7 +42,10 @@ $this->params['breadcrumbs'] = [
                     <?= $item->name ?>
                 </td>
                 <td>
-                    <?= Html::a(Yii::t('app','Edit'), ['manager/archsite-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
+                    <?= $archsites[$item->archsite_id] ?>
+                </td>
+                <td>
+                    <?= Html::a(Yii::t('app','Edit'), ['manager/area-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

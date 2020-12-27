@@ -186,8 +186,13 @@ JS;
     <?php if (!empty($petroglyph->lat) && !empty($petroglyph->lng) && Yii::$app->user->can('manager')): ?>
             <div class="col-xs-6 col-sm-6 col-md-3">
                 <?php
-                if (isset($inherit_coords) && $inherit_coords == 'archsite') $title = Yii::t('app', 'Coordinates (site)');
-                else  $title = Yii::t('app', 'Coordinates');
+                $title = Yii::t('app', 'Coordinates');
+                if (isset($inherit_coords)){
+                    if ($inherit_coords == 'archsite')
+                        $title = Yii::t('app', 'Coordinates (site)');
+                    else if ($inherit_coords == 'area')
+                        $title = Yii::t('app', 'Coordinates (area)');
+                }
                 echo $this->render('_panel', [
                     'title' => $title,
                     'data' => [$petroglyph->lat, $petroglyph->lng],

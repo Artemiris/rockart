@@ -1,29 +1,33 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $areas Array */
 /* @var $archsite Archsite */
-/* @var $numPet Integer */
-/* @var $petroglyphs Petroglyph[]*/
+/* @var $area Area */
+/* @var $petroglyphs Array */
 
-use common\models\Area;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\models\Archsite;
+use common\models\Area;
 use common\models\Petroglyph;
 
-$this->title = $archsite->name;
+$this->title = $area->name;
 
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Sites'), 'url' => ['archsite/index']],
+    ['label' => Yii::t('app', 'Site'), 'url' => ['archsite/'.$area->archsite_id]],
     $this->title,
 ];
+
 ?>
-<?= $numPet > 0 ? $this->render('../layouts/_filter_bar', [
+
+<?= $this->render('../layouts/_filter_bar', [
     'petroglyphs' => $petroglyphs,
     'filter' => $filter,
-]) : '' ?>
+]) ?>
+
+
 <?php
+
 $script = <<< JS
 
 $(document).ready(function () {
@@ -34,15 +38,12 @@ $(document).ready(function () {
     });
 });
 
-JS;
-
-$script2 = <<< JS
 function filter(){
     var filter = ".petroglyph-card";
-    if ($('#epoch_button').val() !== "epoch_all") filter += '.'+$('#epoch_button').val();
-    if ($('#culture_button').val() !== "culture_all") filter += '.'+$('#culture_button').val();
-    if ($('#method_button').val() !== "method_all") filter += '.'+$('#method_button').val();
-    if ($('#style_button').val() !== "style_all") filter += '.'+$('#style_button').val();
+    if ($('#epoch_button').val() != "epoch_all") filter += '.'+$('#epoch_button').val();
+    if ($('#culture_button').val() != "culture_all") filter += '.'+$('#culture_button').val();
+    if ($('#method_button').val() != "method_all") filter += '.'+$('#method_button').val();
+    if ($('#style_button').val() != "style_all") filter += '.'+$('#style_button').val();
 
     $('.petroglyph-card').removeClass('msnry');
     $('.collection').masonry('destroy');
@@ -75,14 +76,14 @@ $(document).ready(function() {
          $('#style_button').val($(this).attr('id'));
          filter()});
 });
-JS;
 
+
+JS;
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/archsitemanage.js?20200501');
 $this->registerJs($script, yii\web\View::POS_READY);
-if($numPet) $this->registerJs($script2, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 ?>
@@ -120,52 +121,33 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
     ]
 ]) ?>
 
-<?php if (empty($archsite->image)): ?>
+<?php if (empty($area->image)): ?>
     <?php if (Yii::$app->user->can('manager')): ?>
-        <?= Html::a(Yii::t('app', 'Edit'), ['manager/archsite-update', 'id' => $archsite->id], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a(Yii::t('app', 'Edit'), ['manager/area-update', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php endif; ?>
-    <h1><?= Html::encode($archsite->name) ?></h1>
-    <?= $archsite->description ?>
+    <h1><?= Html::encode($area->name) ?></h1>
+    <?= $area->description ?>
 <?php else: ?>
     <div class="pull-left poster col-xs-6">
-        <?= Html::a(Html::img(Archsite::SRC_IMAGE . '/' . $archsite->thumbnailImage, [
+        <?= Html::a(Html::img(Area::SRC_IMAGE . '/' . $area->thumbnailImage, [
             'class' => 'img-responsive'
-        ]), Archsite::SRC_IMAGE . '/' . $archsite->image, [
+        ]), Area::SRC_IMAGE . '/' . $area->image, [
             'rel' => 'findImages'
         ]); ?>
     </div>
     <?php if (Yii::$app->user->can('manager')): ?>
-        <?= Html::a(Yii::t('app', 'Edit'), ['manager/archsite-update', 'id' => $archsite->id], ['class' => 'btn btn-primary pull-right']) ?>
+        <?= Html::a(Yii::t('app', 'Edit'), ['manager/area-update', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php endif; ?>
-    <h1><?= Html::encode($archsite->name) ?></h1>
-    <?= $archsite->description ?>
+    <h1><?= Html::encode($area->name) ?></h1>
+    <?= $area->description ?>
 <?php endif; ?>
-<?php if (!empty($archsite->publication)): ?>
+<?php if (!empty($area->publication)): ?>
     <h3><?= Yii::t('app', 'Publications') ?></h3>
-    <?= $archsite->publication ?>
+    <?= $area->publication ?>
 <?php endif; ?>
 
-<div class="clearfix"></div>
-<?php if (!empty($areas)): ?>
-    <h2><?= Yii::t('app', 'Areas') ?></h2>
-    <div class="row collection" id="area_container">
-        <?php foreach ($areas as $area): ?>
-        <div id="area_card_<?= $area->id?>" class="col-xs-12 col-sm-4 col-md-3 msnry">
-            <a href="<?= Url::to(['area/view', 'id'=>$area->id]) ?>" class="petroglyph-item">
-                <div class="row" id="<?= $area->id ?>">
-                    <?php if (!empty($area->image)): ?>
-                    <div class="image-origin" style="display: block">
-                        <?= Html::img(Area::SRC_IMAGE . '/' . $area->thumbnailImage, ['class' => 'img-responsive']) ?>
-                    </div>
-                    <?php endif; ?>
-                </div>
-                <h4><?= $area->name ?></h4>
-            </a>
-        </div>
-        <?php endforeach; ?>
-    </div>
-<?php endif; ?>
-<div class="clearfix"></div>
+    <div class="clearfix"></div>
+
 <?php if (!empty($petroglyphs)): ?>
     <h2><?= Yii::t('app', 'Panels') ?></h2>
     <div class="row collection" id="petroglyph_container">
