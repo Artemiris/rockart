@@ -177,4 +177,30 @@ class Area extends \yii\db\ActiveRecord
 
         return parent::beforeDelete();
     }
+
+    public function searchPetroglyphs($search)
+    {
+        //TODO: Этот запрос точно должен быть таким? Мб просто Petroglyph->find()? На мой взгляд тут просто переписан MultilingualQuery()
+        $query = $this->hasMany(Petroglyph::className(), ['area_id' => 'id'])->join('LEFT JOIN', 'petroglyph_language', 'petroglyph_language.petroglyph_id = petroglyph.id');
+        $query->where(['deleted' => null])->andWhere(['locale' => Yii::$app->language])->orderBy(['id' => SORT_DESC]);
+        if (!Yii::$app->user->can('manager')) {
+            $query->andWhere(['public' => 1]);
+        }
+
+        $dir = '../../vendor/phpmorphy-0.3.7/dicts';
+        if (Yii::$app->language == "ru") $lang = 'ru_RU';
+        else $lang = 'en_EN';
+        $opts = array(
+            'storage' => PHPMORPHY_STORAGE_FILE,
+        );
+        try {
+            $morphy = new \phpMorphy($dir, $lang, $opts);
+        } catch(phpMorphy_Exception $e) {
+            die('Error occured while creating phpMorphy instance: ' . $e->getMessage());
+        }
+        $forms = $morphy->getAllForms($search);
+        if (empty($forms)) $forms = $search;
+        $query = $query->andWhere(['or',['or like', 'description', $forms], ['or like', 'name', $forms]]);
+        return $query;
+    }
 }

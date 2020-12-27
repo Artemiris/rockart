@@ -4,7 +4,7 @@
 namespace frontend\controllers;
 
 use common\models\Area;
-use common\models\Petroglyph;
+use yii\web\HttpException;
 
 class AreaController extends \yii\web\Controller
 {
@@ -15,11 +15,15 @@ class AreaController extends \yii\web\Controller
         if (empty($area)) {
             throw new HttpException(404);
         }
-        $petroglyphs = $area->petroglyphs;
+        if ($filter = Yii::$app->request->get('filter')) {
+            $petroglyphs = $area->searchPetroglyphs(mb_strtoupper($filter))->all();
+        }
+        else $petroglyphs = $area->petroglyphs;
 
         return $this->render('view', [
             'area' => $area,
             'petroglyphs' => $petroglyphs,
+            'filter' => $filter
         ]);
     }
 }
