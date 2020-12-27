@@ -6,9 +6,9 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Участки';
+$this->title = Yii::t('app', 'Areas');
 $this->params['breadcrumbs'] = [
-    ['label' => 'Управление контентом', 'url' => ['/manager/index']],
+    ['label' => Yii::t('manager', 'Management'), 'url' => ['/manager/index']],
     $this->title,
 ];
 ?>
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'] = [
 
 <div class="clearfix">
     <div class="pull-right">
-        <?= Html::a('Добавить участок', ['manager/area-create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Add area'), ['manager/area-create'], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
 
@@ -28,8 +28,8 @@ $this->params['breadcrumbs'] = [
         <thead>
         <tr>
             <th>№</th>
-            <th>Название</th>
-            <th>Памятник</th>
+            <th><?=Yii::t('manager', 'Name')?></th>
+            <th><?=Yii::t('manager', 'Archsite')?></th>
             <th></th>
         </tr>
         </thead>
@@ -44,9 +44,8 @@ $this->params['breadcrumbs'] = [
                 <td>
                     <?= $archsites[$item->archsite_id] ?>
                 </td>
-                </td>
                 <td>
-                    <?= Html::a('Перейти', ['manager/area-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a(Yii::t('app','Edit'), ['manager/area-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>

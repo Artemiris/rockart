@@ -4,9 +4,9 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Памятники';
+$this->title = Yii::t('manager', 'Archsites');
 $this->params['breadcrumbs'] = [
-    ['label' => 'Управление контентом', 'url' => ['/manager/index']],
+    ['label' => Yii::t('manager', 'Management'), 'url' => ['/manager/index']],
     $this->title,
 ];
 ?>
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'] = [
 
 <div class="clearfix">
     <div class="pull-right">
-        <?= Html::a('Добавить памятник', ['manager/archsite-create'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('manager', 'Add archsite'), ['manager/archsite-create'], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>
 
@@ -26,11 +26,11 @@ $this->params['breadcrumbs'] = [
         <thead>
         <tr>
             <th>№</th>
-            <th>Название</th>
+            <th><?=Yii::t('manager', 'Name')?></th>
             <th></th>
         </tr>
         </thead>
-        <?php /** @var \common\models\Site $item */
+        <?php /** @var \common\models\Archsite $item */
         foreach ($archsites as $i => $item): ?>
             <tr>
                 <td>
@@ -38,9 +38,8 @@ $this->params['breadcrumbs'] = [
                 <td>
                     <?= $item->name ?>
                 </td>
-                </td>
                 <td>
-                    <?= Html::a('Перейти', ['manager/archsite-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a(Yii::t('app','Edit'), ['manager/archsite-update', 'id' => $item->id], ['class' => 'btn btn-primary']) ?>
                 </td>
             </tr>
         <?php endforeach; ?>
