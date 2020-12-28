@@ -537,7 +537,7 @@ class ManagerController extends Controller
         $model = new Petroglyph();
 
         $archsites = ArrayHelper::map(Archsite::find()->all(), 'id', 'name');
-
+        $areas = [];
         $cultures = ArrayHelper::map(Culture::find()->all(), 'id', 'name');
         $epochs = ArrayHelper::map(Epoch::find()->all(), 'id', 'name');
         $methods = ArrayHelper::map(Method::find()->all(), 'id', 'name');
@@ -567,6 +567,7 @@ class ManagerController extends Controller
             'epochs' => $epochs,
             'methods' => $methods,
             'styles' => $styles,
+            'areas' => $areas
         ]);
     }
 
