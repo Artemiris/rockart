@@ -15,6 +15,7 @@ $archsite = \common\models\Archsite::find()->where(['id'=>$petroglyph->archsite_
 $archsiteURL = $archsite == null ? null : '/archsite/'.$archsite->id;
 if($archsite != null){
     $this->params['breadcrumbs'] = [
+        ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
         ['label' => $archsite->name, 'url' => $archsiteURL],
     ];
 }else{

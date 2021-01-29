@@ -13,6 +13,7 @@ use common\models\Petroglyph;
 $this->title = $area->name;
 $archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name;
 $this->params['breadcrumbs'] = [
+    ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
     ['label' => $archsiteName, 'url' => ['/archsite/'.$area->archsite_id]],
     $this->title,
 ];
