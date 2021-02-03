@@ -1,7 +1,6 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $archsite Archsite */
 /* @var $area Area */
 /* @var $petroglyphs Array */
 
@@ -12,9 +11,10 @@ use common\models\Area;
 use common\models\Petroglyph;
 
 $this->title = $area->name;
-
+$archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name;
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Site'), 'url' => ['archsite/'.$area->archsite_id]],
+    ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
+    ['label' => $archsiteName, 'url' => ['/archsite/'.$area->archsite_id]],
     $this->title,
 ];
 
