@@ -47,7 +47,7 @@ function changePictures(newImages){
         }
         i++;
     }
-
+    $(".container").masonry({itemSelector: '.msnry'});
 }
 
 if (typeof vieworigin != "undefined") vieworigin.addEventListener("click", onViewOriginal);
