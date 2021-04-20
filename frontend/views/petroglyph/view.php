@@ -22,7 +22,6 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
 $lang = json_encode(Yii::$app->language);
 $author = json_encode(Yii::t('model', 'Authors'));
 $copyright = json_encode(Yii::t('model', 'Copyright'));
-$license = json_encode(Yii::t('model', 'License'));
 
 if ($json_petroglyphs) {
     $script = <<< JS
@@ -53,9 +52,8 @@ JS;
                     url: modelURL,
                     success: function(data) {
                         let d = JSON.parse(data);
-                        self.attr('data-caption','<p style="padding:4px; margin:4px;">' + $author + ': ' + (d[0] || '') + 
-                        '</br>' + $copyright + ': ' + (d[1] || '') + '</br>' +
-                        $license + ': ' + (d[2] || '') + '</p>');
+                        self.attr('data-caption','<p style="padding:4px; margin:4px;">' + $author + ': ' + (d.author || '') + 
+                        '</br>' + $copyright + ': ' + (d.copyright || '') + '</p>');
                     }
                 });
             });
