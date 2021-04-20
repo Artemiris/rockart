@@ -19,26 +19,47 @@ $this->params['breadcrumbs'] = [
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
+$lang = json_encode(Yii::$app->language);
+$author = json_encode(Yii::t('model', 'Authors'));
+$copyright = json_encode(Yii::t('model', 'Copyright'));
+$license = json_encode(Yii::t('model', 'License'));
 
 if ($json_petroglyphs) {
     $script = <<< JS
 
-    var arr = $json_petroglyphs,
+        var arr = $json_petroglyphs,
         map_center = '{"lat": ' + parseFloat(arr[0].lat) + ', "lng": ' + parseFloat(arr[0].lng) + '}',
         date = new Date();
 
-    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-    var expires = ";expires=" + date.toUTCString();
+        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+        var expires = ";expires=" + date.toUTCString();
 
-    document.cookie = "map_center=" + map_center + expires + ";path=/";
-    
+        document.cookie = "map_center=" + map_center + expires + ";path=/";
+
 JS;
 
     $this->registerJs($script, yii\web\View::POS_BEGIN);
 
     $script = <<< JS
         
-     $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(document).ready(function() {
+            $('.f3d').each(function () {
+                let self = $(this);
+                let modelID = self.attr('href').split('/').slice(-1)[0];
+                let modelURL = 'http://3d/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
+                $.ajax({
+                    url: modelURL,
+                    success: function(data) {
+                        let d = JSON.parse(data);
+                        self.attr('data-caption','<p style="padding:4px; margin:4px;">' + $author + ': ' + (d[0] || '') + 
+                        '</br>' + $copyright + ': ' + (d[1] || '') + '</br>' +
+                        $license + ': ' + (d[2] || '') + '</p>');
+                    }
+                });
+            });
+        });
 
 JS;
 
@@ -80,8 +101,9 @@ JS;
         'nextEffect' => 'elastic',
         'closeBtn' => false,
         'openOpacity' => true,
+        'beforeShow' => new \yii\web\JsExpression('function(){ this.title =  $(this.element).data("caption"); }'),
         'helpers' => [
-            'title' => ['type' => 'float'],
+            'title' => ['type' => 'inside'],
             'buttons' => [
             ],
             'thumbs' => ['width' => 68, 'height' => 50],
@@ -242,9 +264,10 @@ JS;
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
                 <?= Html::a(Html::img(str_replace("/iframe/", "/object/poster/", $item->url), [
                     'class' => 'img-responsive img-thumbnail']), $item->url, [
-                    'class' => 'fancybox',
+                    'class' => 'fancybox f3d',
                     'rel' => 'petroglyphImages',
                     'data-fancybox-type' => 'iframe',
+                    'id' => 'f3d',
                 ]) ?>
             </div>
         <?php endforeach; ?>
