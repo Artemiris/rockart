@@ -16,7 +16,7 @@ $this->params['breadcrumbs'] = [
     $this->title,
 ];
 
-$this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+$this->registerCssFile('css/petroglyph.css?21042021', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
 $lang = json_encode(Yii::$app->language);
@@ -55,8 +55,14 @@ JS;
                         let d = JSON.parse(data);
                         let aVal = (d.author || '');
                         let cVal = (d.copyright || '');
-                        let cblock = '<p class="authors-block">' + $author + ': ' + aVal + '</br>' + $copyright + ': ' + cVal + '</p>';
-                        self.attr('data-caption',cblock);
+                        if(d.author || d.copyright){
+                            let cblock = '<p class="authors-block">'
+                            if(d.author) cblock += $author + ': ' + aVal;
+                            if(d.author && d.copyright) cblock += '</br>';
+                            if(d.copyright) cblock += $copyright + ': ' + cVal;
+                            cblock += '</p>';
+                            self.attr('data-caption',cblock);
+                        }
                     }
                 });
             });
