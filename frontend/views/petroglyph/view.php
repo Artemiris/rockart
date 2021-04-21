@@ -295,5 +295,6 @@ JS;
 <?php endif; ?>
 
     <div class="clearfix"></div>
-    <h5 style='font-style:italic;'><?= Yii::t('model', 'Page author') . ': ' . $petroglyph->author_page ?></h5>
+    </br>
+    <p class="page-author"><?= Yii::t('model', 'Page author') . ': ' . $petroglyph->author_page ?></p>
     
