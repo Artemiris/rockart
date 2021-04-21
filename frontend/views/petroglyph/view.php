@@ -47,7 +47,8 @@ JS;
             $('.f3d').each(function () {
                 let self = $(this);
                 let modelID = self.attr('href').split('/').slice(-1)[0];
-                let modelURL = 'http://3d/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
+                let domain = self.attr('href').split('/')[2];
+                let modelURL = 'http://' + domain + '/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
                 $.ajax({
                     url: modelURL,
                     success: function(data) {
