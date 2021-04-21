@@ -62,6 +62,9 @@ include_once "../../vendor/phpmorphy-0.3.7/src/common.php";
  * @property string $thumbnailImOverlay
  *
  * @property integer $area_id
+ * 
+ * @property string $author_page
+ * @property string $author_page_en
  */
 class Petroglyph extends \yii\db\ActiveRecord
 {
@@ -93,7 +96,7 @@ class Petroglyph extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'name_en'], 'required'],
-            [['name', 'name_en', 'description', 'description_en', 'index', 'technical_description', 'publication'], 'string'],
+            [['name', 'name_en', 'description', 'description_en', 'index', 'technical_description', 'publication','author_page','author_page_en'], 'string'],
             [['lat', 'lng', 'orientation_x', 'orientation_y', 'orientation_z'], 'number'],
             [['deleted', 'public'], 'integer'],
             [['uuid'], 'string', 'max' => 64],
@@ -137,6 +140,7 @@ class Petroglyph extends \yii\db\ActiveRecord
                     'description',
                     'publication',
                     'technical_description',
+                    'author_page'
                 ]
             ],
             TimestampBehavior::className(),
@@ -177,6 +181,8 @@ class Petroglyph extends \yii\db\ActiveRecord
             'technical_description_en' => Yii::t('model', 'Technical description in English'),
             'publication' => Yii::t('model', 'Publication'),
             'publication_en' => Yii::t('model', 'Publication in English'),
+            'author_page' => 'Автор описания(страницы)',
+            'author_page_en' => 'Автор описания(страницы) на англ',
         ];
     }
 
