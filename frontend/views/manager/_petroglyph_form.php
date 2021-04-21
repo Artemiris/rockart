@@ -120,7 +120,8 @@ use mihaildev\ckeditor\CKEditor;
                     ],
 
                 ]) ?>
-
+            <?= $form->field($model, 'author_page') ?>
+            <?= $form->field($model, 'author_page_en') ?>
         </div>
         <div class="col-xs-12 col-md-6 text-right">
             <div class="form-group">
