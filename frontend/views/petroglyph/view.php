@@ -293,8 +293,8 @@ JS;
     <div id="map_canvas" style="width:100%; height:600px; float:left; margin-right: 20px;"></div>
 
 <?php endif; ?>
-
+<?php if (isset($petroglyph->author_page)): ?>
     <div class="clearfix"></div>
     </br>
     <p class="page-author"><?= Yii::t('model', 'Page author') . ': ' . $petroglyph->author_page ?></p>
-    
+<?php endif; ?>
