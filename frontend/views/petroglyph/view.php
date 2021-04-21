@@ -11,12 +11,32 @@ use common\models\Composition;
 use yii\helpers\Html;
 
 $this->title = $petroglyph->name;
-$this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Petroglyphs'), 'url' => ['petroglyph/index']],
-    $this->title,
-];
+$archsite = \common\models\Archsite::find()->where(['id'=>$petroglyph->archsite_id])->one();
+$archsiteURL = $archsite == null ? null : '/archsite/'.$archsite->id;
+if($archsite != null){
+    $this->params['breadcrumbs'] = [
+        ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
+        ['label' => $archsite->name, 'url' => $archsiteURL],
+    ];
+}else{
+    $this->params['breadcrumbs'] = [
+        ['label' => Yii::t('app','Petroglyphs'), 'url' => '/petroglyph'],
+    ];
+}
+
+$area = $petroglyph->area_id == null ? null : \common\models\Area::find()->where(['id'=>$petroglyph->area_id])->one();
+$areaURL = $area == null ? '' : '/area/'.$area->id;
 
 $this->registerCssFile('css/petroglyph.css?21042021', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+if($area != null){
+    $this->params['breadcrumbs'][] = [
+        'label' => $area->name, 'url' => $areaURL,
+    ];
+}
+$this->params['breadcrumbs'][] = [
+    'label'=>$this->title,
+];
+$this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
 $lang = json_encode(Yii::$app->language);
