@@ -20,8 +20,8 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
 $lang = json_encode(Yii::$app->language);
-$author = json_encode(Yii::t('model', 'Authors'));
-$copyright = json_encode(Yii::t('model', 'Copyright'));
+$author = json_encode(Yii::t('model', 'Model authors'));
+$copyright = json_encode(Yii::t('model', 'Model copyright'));
 
 if ($json_petroglyphs) {
     $script = <<< JS
@@ -53,8 +53,10 @@ JS;
                     url: modelURL,
                     success: function(data) {
                         let d = JSON.parse(data);
-                        self.attr('data-caption','<p style="padding:4px; margin:4px;">' + $author + ': ' + (d.author || '') + 
-                        '</br>' + $copyright + ': ' + (d.copyright || '') + '</p>');
+                        let aVal = (d.author || '');
+                        let cVal = (d.copyright || '');
+                        let cblock = '<p class="authors-block">' + $author + ': ' + aVal + '</br>' + $copyright + ': ' + cVal + '</p>';
+                        self.attr('data-caption',cblock);
                     }
                 });
             });
