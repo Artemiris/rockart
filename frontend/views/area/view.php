@@ -1,7 +1,6 @@
 <?php
 
 /* @var $this yii\web\View */
-/* @var $archsite Archsite */
 /* @var $area Area */
 /* @var $petroglyphs Array */
 
@@ -12,9 +11,10 @@ use common\models\Area;
 use common\models\Petroglyph;
 
 $this->title = $area->name;
-
+$archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name;
 $this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Site'), 'url' => ['archsite/'.$area->archsite_id]],
+    ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
+    ['label' => $archsiteName, 'url' => ['/archsite/'.$area->archsite_id]],
     $this->title,
 ];
 
@@ -82,7 +82,7 @@ JS;
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-$this->registerJsFile('/js/archsitemanage.js?20200501');
+$this->registerJsFile('/js/archsitemanage.js?20210326');
 $this->registerJs($script, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);

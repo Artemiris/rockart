@@ -11,34 +11,82 @@ use common\models\Composition;
 use yii\helpers\Html;
 
 $this->title = $petroglyph->name;
-$this->params['breadcrumbs'] = [
-    ['label' => Yii::t('app', 'Petroglyphs'), 'url' => ['petroglyph/index']],
-    $this->title,
-];
+$archsite = \common\models\Archsite::find()->where(['id'=>$petroglyph->archsite_id])->one();
+$archsiteURL = $archsite == null ? null : '/archsite/'.$archsite->id;
+if($archsite != null){
+    $this->params['breadcrumbs'] = [
+        ['label' => Yii::t('app','Sites'), 'url' => '/archsite'],
+        ['label' => $archsite->name, 'url' => $archsiteURL],
+    ];
+}else{
+    $this->params['breadcrumbs'] = [
+        ['label' => Yii::t('app','Petroglyphs'), 'url' => '/petroglyph'],
+    ];
+}
 
+$area = $petroglyph->area_id == null ? null : \common\models\Area::find()->where(['id'=>$petroglyph->area_id])->one();
+$areaURL = $area == null ? '' : '/area/'.$area->id;
+
+$this->registerCssFile('css/petroglyph.css?21042021', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+if($area != null){
+    $this->params['breadcrumbs'][] = [
+        'label' => $area->name, 'url' => $areaURL,
+    ];
+}
+$this->params['breadcrumbs'][] = [
+    'label'=>$this->title,
+];
 $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
+$lang = json_encode(Yii::$app->language);
+$author = json_encode(Yii::t('model', 'Model authors'));
+$copyright = json_encode(Yii::t('model', 'Model copyright'));
 
 if ($json_petroglyphs) {
     $script = <<< JS
 
-    var arr = $json_petroglyphs,
+        var arr = $json_petroglyphs,
         map_center = '{"lat": ' + parseFloat(arr[0].lat) + ', "lng": ' + parseFloat(arr[0].lng) + '}',
         date = new Date();
 
-    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-    var expires = ";expires=" + date.toUTCString();
+        date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+        var expires = ";expires=" + date.toUTCString();
 
-    document.cookie = "map_center=" + map_center + expires + ";path=/";
-    
+        document.cookie = "map_center=" + map_center + expires + ";path=/";
+
 JS;
 
     $this->registerJs($script, yii\web\View::POS_BEGIN);
 
     $script = <<< JS
         
-     $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(document).ready(function() {
+            $('.f3d').each(function () {
+                let self = $(this);
+                let modelID = self.attr('href').split('/').slice(-1)[0];
+                let domain = self.attr('href').split('/')[2];
+                let modelURL = 'http://' + domain + '/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
+                $.ajax({
+                    url: modelURL,
+                    success: function(data) {
+                        let d = JSON.parse(data);
+                        let aVal = (d.author || '');
+                        let cVal = (d.copyright || '');
+                        if(d.author || d.copyright){
+                            let cblock = '<p class="authors-block">'
+                            if(d.author) cblock += $author + ': ' + aVal;
+                            if(d.author && d.copyright) cblock += '</br>';
+                            if(d.copyright) cblock += $copyright + ': ' + cVal;
+                            cblock += '</p>';
+                            self.attr('data-caption',cblock);
+                        }
+                    }
+                });
+            });
+        });
 
 JS;
 
@@ -80,8 +128,9 @@ JS;
         'nextEffect' => 'elastic',
         'closeBtn' => false,
         'openOpacity' => true,
+        'beforeShow' => new \yii\web\JsExpression('function(){ this.title =  $(this.element).data("caption"); }'),
         'helpers' => [
-            'title' => ['type' => 'float'],
+            'title' => ['type' => 'inside'],
             'buttons' => [
             ],
             'thumbs' => ['width' => 68, 'height' => 50],
@@ -242,9 +291,10 @@ JS;
             <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
                 <?= Html::a(Html::img(str_replace("/iframe/", "/object/poster/", $item->url), [
                     'class' => 'img-responsive img-thumbnail']), $item->url, [
-                    'class' => 'fancybox',
+                    'class' => 'fancybox f3d',
                     'rel' => 'petroglyphImages',
                     'data-fancybox-type' => 'iframe',
+                    'id' => 'f3d',
                 ]) ?>
             </div>
         <?php endforeach; ?>

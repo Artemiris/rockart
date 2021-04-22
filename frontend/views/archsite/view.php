@@ -80,7 +80,7 @@ JS;
 
 $this->registerJsFile('/js/masonry/masonry.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 $this->registerJsFile('/js/masonry/imagesloaded.pkgd.min.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-$this->registerJsFile('/js/archsitemanage.js?20200501');
+$this->registerJsFile('/js/archsitemanage.js?20210326');
 $this->registerJs($script, yii\web\View::POS_READY);
 if($numPet) $this->registerJs($script2, yii\web\View::POS_READY);
 $this->registerCssFile('css/archsite.css?20200317', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
