@@ -36,7 +36,6 @@ if($area != null){
 $this->params['breadcrumbs'][] = [
     'label'=>$this->title,
 ];
-$this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
 //$mdCol = Yii::$app->user->can('manager') ? 3 : 4;
 $lang = json_encode(Yii::$app->language);
