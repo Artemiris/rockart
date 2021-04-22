@@ -31,5 +31,6 @@ return [
     'Publication in English' => 'Публикация на английском',
     'State registry number' => 'Номер по госреестру',
     'Model authors' => 'Авторы модели',
-    'Model copyright' => 'Правообладатель модели'
+    'Model copyright' => 'Правообладатель модели',
+    'Page authors' => 'Авторы страницы'
 ];

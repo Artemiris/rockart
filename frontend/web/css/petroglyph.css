@@ -5,6 +5,11 @@
   font-size: 14px;
   margin-right: 8px; }
 
+.page-author{
+  font-size: 14px;
+  font-style: italic;
+}
+
 .petroglyph-item {
   display: block;
   border: solid 2px #e1e1e1;
