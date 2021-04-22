@@ -346,5 +346,5 @@ JS;
 <?php if (isset($petroglyph->author_page)): ?>
     <div class="clearfix"></div>
     </br>
-    <p class="page-author"><?= Yii::t('model', 'Page author') . ': ' . $petroglyph->author_page ?></p>
+    <p class="page-author"><?= Yii::t('model', 'Page authors') . ': ' . $petroglyph->author_page ?></p>
 <?php endif; ?>

@@ -32,5 +32,5 @@ return [
     'State registry number' => 'Номер по госреестру',
     'Model authors' => 'Авторы модели',
     'Model copyright' => 'Правообладатель модели',
-    'Page author' => 'Автор страницы'
+    'Page authors' => 'Авторы страницы'
 ];
