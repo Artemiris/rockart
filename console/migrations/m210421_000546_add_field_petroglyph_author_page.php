@@ -21,7 +21,6 @@ class m210421_000546_add_field_petroglyph_author_page extends Migration
     public function safeDown()
     {
         $this->dropColumn('petroglyph_language', 'author_page');
-        return false;
     }
 
     /*
