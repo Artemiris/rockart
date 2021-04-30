@@ -24,6 +24,10 @@ if($archsite != null){
     ];
 }
 
+$iauthor = Yii::t('model', 'Image authors');
+$icopyright = Yii::t('model', 'Image copyright');
+$isource = Yii::t('model', 'Image source');
+
 $area = $petroglyph->area_id == null ? null : \common\models\Area::find()->where(['id'=>$petroglyph->area_id])->one();
 $areaURL = $area == null ? '' : '/area/'.$area->id;
 
@@ -74,12 +78,11 @@ JS;
                         let d = JSON.parse(data);
                         let aVal = (d.author || '');
                         let cVal = (d.copyright || '');
+                        let cblock = '';
                         if(d.author || d.copyright){
-                            let cblock = '<p class="authors-block">'
                             if(d.author) cblock += $author + ': ' + aVal;
                             if(d.author && d.copyright) cblock += '</br>';
                             if(d.copyright) cblock += $copyright + ': ' + cVal;
-                            cblock += '</p>';
                             self.attr('data-caption',cblock);
                         }
                     }
@@ -127,7 +130,7 @@ JS;
         'nextEffect' => 'elastic',
         'closeBtn' => false,
         'openOpacity' => true,
-        'beforeShow' => new \yii\web\JsExpression('function(){ this.title =  $(this.element).data("caption"); }'),
+        'beforeShow' => new \yii\web\JsExpression("function(){ if($(this.element).attr('data-caption') !== '') {this.title =" . "'<p class=\"authors-block\">' + " . " $(this.element).attr('data-caption') " . "+ '</p>'};}"),
         'helpers' => [
             'title' => ['type' => 'inside'],
             'buttons' => [
@@ -145,47 +148,107 @@ JS;
     <div class="col-xs-12 col-sm-6 col-md-6">
     <?php if (!empty($petroglyph->image)): ?>
     <div class="poster">
+        <?php
+            $iauthorset = isset($petroglyph->img_author) && !empty($petroglyph->img_author);
+            $icopyrightset = isset($petroglyph->img_copyright) && !empty($petroglyph->img_copyright);
+            $isourceset = isset($petroglyph->img_source) && !empty($petroglyph->img_source);
+        ?>
         <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImage, [
-            'class' => 'img-responsive'
+            'class' => 'img-responsive',
+            'title' => ($iauthorset ? "© " . $petroglyph->img_author : "")
+                . ($icopyrightset ? "\n© " . $petroglyph->img_copyright : "")
+                . ($isourceset ? "\n© " . $petroglyph->img_source : ""),
         ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->image, [
-            'rel' => 'petroglyphImages'
+            'rel' => 'petroglyphImages',
+            'data-caption' => ($iauthorset ? $iauthor . ": " . $petroglyph->img_author : "")
+                . ($icopyrightset ?  "<br>" . $icopyright . ": " .  $petroglyph->img_copyright : "")
+                . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->img_source : ""),
         ]); ?>
+        <div id="icopyright" style="width:100%">
+            <?= '<p class="authors-block">' . ($iauthorset ? $iauthor . ": " . $petroglyph->img_author : "")
+            . ($icopyrightset ? "<br>" . $icopyright . ": " .  $petroglyph->img_copyright : "")
+            . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->img_source : "") . '</p>'?>
+        </div>
         </div>
     <?endif;?>
     
     <?php if (!empty($petroglyph->im_dstretch)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?php
+                $iauthorset = isset($petroglyph->ds_img_author) && !empty($petroglyph->ds_img_author);
+                $icopyrightset = isset($petroglyph->ds_img_copyright) && !empty($petroglyph->ds_img_copyright);
+                $isourceset = isset($petroglyph->ds_img_source) && !empty($petroglyph->ds_img_source);
+            ?>
             <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDstretch, [
-                'class' => 'img-responsive'
+                'class' => 'img-responsive',
+                'title' => ($iauthorset ? "© " . $petroglyph->ds_img_author : "")
+                    . ($icopyrightset ? "\n© " . $petroglyph->ds_img_copyright : "")
+                    . ($isourceset ? "\n© " . $petroglyph->ds_img_source : ""),
             ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_dstretch, [
-                'rel' => 'petroglyphImages'
+                'rel' => 'petroglyphImages',
+                'data-caption' => ($iauthorset ? $iauthor . ": " . $petroglyph->ds_img_author : "")
+                    . ($icopyrightset ?  "<br>" . $icopyright . ": " .  $petroglyph->ds_img_copyright : "")
+                    . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->ds_img_source : ""),
             ]); ?>
         </div>
     <?endif;?>
     <?php if (!empty($petroglyph->im_drawing)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?php
+                $iauthorset = isset($petroglyph->dr_img_author) && !empty($petroglyph->dr_img_author);
+                $icopyrightset = isset($petroglyph->dr_img_copyright) && !empty($petroglyph->dr_img_copyright);
+                $isourceset = isset($petroglyph->dr_img_source) && !empty($petroglyph->dr_img_source);
+            ?>
             <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDrawing, [
-                'class' => 'img-responsive'
+                'class' => 'img-responsive',
+                'title' => ($iauthorset ? "© " . $petroglyph->dr_img_author : "")
+                    . ($icopyrightset ? "\n© " . $petroglyph->dr_img_copyright : "")
+                    . ($isourceset ? "\n© " . $petroglyph->dr_img_source : ""),
             ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_drawing, [
-                'rel' => 'petroglyphImages'
+                'rel' => 'petroglyphImages',
+                'data-caption' => ($iauthorset ? $iauthor . ": " . $petroglyph->dr_img_author : "")
+                    . ($icopyrightset ?  "<br>" . $icopyright . ": " .  $petroglyph->dr_img_copyright : "")
+                    . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->dr_img_source : ""),
             ]); ?>
         </div>
     <?endif;?>
     <?php if (!empty($petroglyph->im_reconstruction)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?php
+                $iauthorset = isset($petroglyph->re_img_author) && !empty($petroglyph->re_img_author);
+                $icopyrightset = isset($petroglyph->re_img_copyright) && !empty($petroglyph->re_img_copyright);
+                $isourceset = isset($petroglyph->re_img_source) && !empty($petroglyph->re_img_source);
+            ?>
             <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImReconstr, [
-                'class' => 'img-responsive'
+                'class' => 'img-responsive',
+                'title' => ($iauthorset ? "© " . $petroglyph->re_img_author : "")
+                    . ($icopyrightset ? "\n© " . $petroglyph->re_img_copyright : "")
+                    . ($isourceset ? "\n© " . $petroglyph->re_img_source : ""),
             ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_reconstruction, [
-                'rel' => 'petroglyphImages'
+                'rel' => 'petroglyphImages',
+                'data-caption' => ($iauthorset ? $iauthor . ": " . $petroglyph->re_img_author : "")
+                    . ($icopyrightset ?  "<br>" . $icopyright . ": " .  $petroglyph->re_img_copyright : "")
+                    . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->re_img_source : ""),
             ]); ?>
         </div>
     <?endif;?>
     <?php if (!empty($petroglyph->im_overlay)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
+            <?php
+                $iauthorset = isset($petroglyph->ov_img_author) && !empty($petroglyph->ov_img_author);
+                $icopyrightset = isset($petroglyph->ov_img_copyright) && !empty($petroglyph->ov_img_copyright);
+                $isourceset = isset($petroglyph->ov_img_source) && !empty($petroglyph->ov_img_source);
+            ?>
             <?= Html::a(Html::img(Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImOverlay, [
-                'class' => 'img-responsive'
+                'class' => 'img-responsive',
+                'title' => ($iauthorset ? "© " . $petroglyph->ov_img_author : "")
+                    . ($icopyrightset ? "\n© " . $petroglyph->ov_img_copyright : "")
+                    . ($isourceset ? "\n© " . $petroglyph->ov_img_source : ""),
             ]), Petroglyph::SRC_IMAGE . '/' . $petroglyph->im_overlay, [
-                'rel' => 'petroglyphImages'
+                'rel' => 'petroglyphImages',
+                'data-caption' => ($iauthorset ? $iauthor . ": " . $petroglyph->ov_img_author : "")
+                    . ($icopyrightset ?  "<br>" . $icopyright . ": " .  $petroglyph->ov_img_copyright : "")
+                    . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->ov_img_source : ""),
             ]); ?>
         </div>
     <?endif;?>
@@ -231,6 +294,7 @@ JS;
 
     <?php endif; ?>
     </div>
+<div class="row">
     <?php if (!empty($petroglyph->lat) && !empty($petroglyph->lng) && Yii::$app->user->can('manager')): ?>
             <div class="col-xs-6 col-sm-6 col-md-3">
                 <?php
@@ -283,30 +347,37 @@ JS;
             ]) ?>
         </div>
     <?php endif; ?>
+</div>
     <?php if (!empty($petroglyph->threeD)):?>
-    <div class="col-xs-12 col-sm-6 col-md-6">
-        <h3><?= Yii::t('app', '3D Models') ?></h3>
-        <?php foreach ($petroglyph->threeD as $item): ?>
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
-                <?= Html::a(Html::img(str_replace("/iframe/", "/object/poster/", $item->url), [
-                    'class' => 'img-responsive img-thumbnail']), $item->url, [
-                    'class' => 'fancybox f3d',
-                    'rel' => 'petroglyphImages',
-                    'data-fancybox-type' => 'iframe',
-                    'id' => 'f3d',
-                ]) ?>
-            </div>
-        <?php endforeach; ?>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h3><?= Yii::t('app', '3D Models') ?></h3>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 images">
+            <?php foreach ($petroglyph->threeD as $item): ?>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="image">
+                        <?= Html::a(Html::img(str_replace("/iframe/", "/object/poster/", $item->url), [
+                            'class' => 'img-responsive img-thumbnail']), $item->url, [
+                            'class' => 'fancybox f3d',
+                            'rel' => 'petroglyphImages',
+                            'data-fancybox-type' => 'iframe',
+                            'id' => 'f3d',
+                        ]) ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     <?php endif; ?>
-
-    <div class="clearfix"></div>
 
 <?php if (!empty($petroglyph->compositions)): ?>
 
     <div class="clearfix"></div>
+<div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
-    <h3><?= Yii::t('app', 'Compositions') ?></h3>
+        <h3><?= Yii::t('app', 'Compositions') ?></h3>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 images">
         <?php foreach ($petroglyph->compositions as $item): ?>
@@ -321,6 +392,7 @@ JS;
             </div>
         <?php endforeach; ?>
     </div>
+</div>
 <?php endif; ?>
 
 <?php if ($json_petroglyphs && Yii::$app->user->can('manager')): ?>

@@ -93,41 +93,113 @@ use mihaildev\ckeditor\CKEditor;
                 <div class="col-xs-6"><?= $form->field($model, 'method_ids')->listBox($methods, ['multiple' => true]) ?></div>
                 <div class="col-xs-6"><?= $form->field($model, 'style_ids')->listBox($styles, ['multiple' => true]) ?></div>
             </div>
+    <br>
+    <hr>
             <div class="row">
-                <div class="col-xs-6"><?= $form->field($model, 'fileImage')->fileInput()?>
-                <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImage,[
-                        'class' => 'img-thumbnail'
-                    ])?>
-                </div>
+                <div class="col-xs-12"><?= $form->field($model, 'fileImage')->fileInput()?></div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileDstr')->fileInput()?>
+                <div class="col-xs-6">
+                    <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImage,[
+                            'class' => 'img-thumbnail'
+                        ])?>
+                </div>
+                <div class="col-xs-6 img-data-edit">
+                    <?= $form->field($model, 'img_author')->textInput() ?>
+                    <?= $form->field($model, 'img_author_en')->textInput() ?>
+                    <?= $form->field($model, 'img_copyright')->textInput() ?>
+                    <?= $form->field($model, 'img_copyright_en')->textInput() ?>
+                    <?= $form->field($model, 'img_source')->textInput() ?>
+                    <?= $form->field($model, 'img_source_en')->textInput() ?>
+                </div>
+            </div>
+    <hr>
+    <br>
+            <div class="row">
+                <div class="col-xs-6"><?=$form->field($model, 'fileDstr')->fileInput()?></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
                     <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImDstretch,[
                         'class' => 'img-thumbnail'
                     ])?>
                 </div>
+                <div class="col-xs-6 img-data-edit">
+                    <?= $form->field($model, 'ds_img_author')->textInput() ?>
+                    <?= $form->field($model, 'ds_img_author_en')->textInput() ?>
+                    <?= $form->field($model, 'ds_img_copyright')->textInput() ?>
+                    <?= $form->field($model, 'ds_img_copyright_en')->textInput() ?>
+                    <?= $form->field($model, 'ds_img_source')->textInput() ?>
+                    <?= $form->field($model, 'ds_img_source_en')->textInput() ?>
+                </div>
+            </div>
+    <hr>
+    <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <?=$form->field($model, 'fileDraw')->fileInput()?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileDraw')->fileInput()?>
+                <div class="col-xs-6">
                     <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImDrawing,[
                         'class' => 'img-thumbnail'
                     ])?>
                 </div>
+                <div class="col-xs-6 img-data-edit">
+                    <?= $form->field($model, 'dr_img_author')->textInput() ?>
+                    <?= $form->field($model, 'dr_img_author_en')->textInput() ?>
+                    <?= $form->field($model, 'dr_img_copyright')->textInput() ?>
+                    <?= $form->field($model, 'dr_img_copyright_en')->textInput() ?>
+                    <?= $form->field($model, 'dr_img_source')->textInput() ?>
+                    <?= $form->field($model, 'dr_img_source_en')->textInput() ?>
+                </div>
+            </div>
+    <hr>
+    <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <?=$form->field($model, 'fileReconstr')->fileInput()?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileReconstr')->fileInput()?>
+                <div class="col-xs-6">
                     <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImReconstr,[
                         'class' => 'img-thumbnail'
                     ])?>
                 </div>
+                <div class="col-xs-6 img-data-edit">
+                    <?= $form->field($model, 're_img_author')->textInput() ?>
+                    <?= $form->field($model, 're_img_author_en')->textInput() ?>
+                    <?= $form->field($model, 're_img_copyright')->textInput() ?>
+                    <?= $form->field($model, 're_img_copyright_en')->textInput() ?>
+                    <?= $form->field($model, 're_img_source')->textInput() ?>
+                    <?= $form->field($model, 're_img_source_en')->textInput() ?>
+                </div>
+            </div>
+    <hr>
+    <br>
+            <div class="row">
+                <div class="col-xs-6">
+                    <?=$form->field($model, 'fileOverlay')->fileInput()?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileOverlay')->fileInput()?>
+                <div class="col-xs-6">
                     <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImOverlay,[
                         'class' => 'img-thumbnail'
                     ])?>
                 </div>
+                <div class="col-xs-6 img-data-edit">
+                    <?= $form->field($model, 'ov_img_author')->textInput() ?>
+                    <?= $form->field($model, 'ov_img_author_en')->textInput() ?>
+                    <?= $form->field($model, 'ov_img_copyright')->textInput() ?>
+                    <?= $form->field($model, 'ov_img_copyright_en')->textInput() ?>
+                    <?= $form->field($model, 'ov_img_source')->textInput() ?>
+                    <?= $form->field($model, 'ov_img_source_en')->textInput() ?>
+                </div>
             </div>
+    <hr>
     <br>
             <div class="row">
                 <div class="col-xs-6">
