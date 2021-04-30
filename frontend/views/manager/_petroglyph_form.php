@@ -94,20 +94,41 @@ use mihaildev\ckeditor\CKEditor;
                 <div class="col-xs-6"><?= $form->field($model, 'style_ids')->listBox($styles, ['multiple' => true]) ?></div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?= $form->field($model, 'fileImage')->fileInput()?></div>
+                <div class="col-xs-6"><?= $form->field($model, 'fileImage')->fileInput()?>
+                <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImage,[
+                        'class' => 'img-thumbnail'
+                    ])?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileDstr')->fileInput()?></div>
+                <div class="col-xs-6"><?=$form->field($model, 'fileDstr')->fileInput()?>
+                    <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImDstretch,[
+                        'class' => 'img-thumbnail'
+                    ])?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileDraw')->fileInput()?></div>
+                <div class="col-xs-6"><?=$form->field($model, 'fileDraw')->fileInput()?>
+                    <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImDrawing,[
+                        'class' => 'img-thumbnail'
+                    ])?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileReconstr')->fileInput()?></div>
+                <div class="col-xs-6"><?=$form->field($model, 'fileReconstr')->fileInput()?>
+                    <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImReconstr,[
+                        'class' => 'img-thumbnail'
+                    ])?>
+                </div>
             </div>
             <div class="row">
-                <div class="col-xs-6"><?=$form->field($model, 'fileOverlay')->fileInput()?></div>
+                <div class="col-xs-6"><?=$form->field($model, 'fileOverlay')->fileInput()?>
+                    <?= Html::img(\common\models\Petroglyph::SRC_IMAGE.'/'.$model->thumbnailImOverlay,[
+                        'class' => 'img-thumbnail'
+                    ])?>
+                </div>
             </div>
+    <br>
             <div class="row">
                 <div class="col-xs-6">
                     <?= $form->field($model, 'technical_description')->widget(CKEditor::className(),
