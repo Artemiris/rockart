@@ -48,7 +48,7 @@ class CliController extends \yii\console\Controller
             $fullName = ($archsite_name ? $archsite_name . ". " : "") . ($area_name ? $area_name . ". " : "") . $actualName;
             foreach ($fileRecords as $fileRecord)
             {
-                if($fullName == $fileRecord->name)
+                if($fullName == $fileRecord->name && empty($petroglyph->threeD))
                 {
                     $p3d = new PetroglyphThreeD();
                     $p3d->url = "https://3d.nsu.ru/ru/iframe/" . $fileRecord->object_id;
