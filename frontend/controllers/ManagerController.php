@@ -1208,4 +1208,30 @@ class ManagerController extends Controller
             'archsites'=>$archsites
         ]);
     }
+
+    public function actionFill3d($file)
+    {
+        $oldApp = \Yii::$app;
+        new \yii\console\Application([
+                'id' => 'Command runner',
+                'basePath' => '@console',
+                'controllerNamespace' => 'console\controllers',
+                'components' => [
+                    'db' => $oldApp->db,
+                ]
+        ]);
+        $errors = '';
+        try {
+            \Yii::$app->runAction('cli/fill3d', [$file]);
+        }catch (\Exception $e){
+            $errors .= $e->getMessage();
+        }
+        \Yii::$app = $oldApp;
+
+        if($errors){
+            Yii::$app->session->setFlash('error', print_r($errors,true));
+        }
+        Yii::$app->session->setFlash('success', file_get_contents(Yii::getAlias('@webroot').'/fill_result.txt'));
+        $this->redirect('fill_result');
+    }
 }

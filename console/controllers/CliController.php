@@ -14,11 +14,12 @@ class CliController extends \yii\console\Controller
     public function actionFill3d($file)
     {
         \Yii::$app->language = 'ru';
-        $fileRecords = json_decode(file_get_contents($file));
+        $fileRecords = json_decode(file_get_contents(\Yii::getAlias('@console') . '/../' . $file));
         if(empty($fileRecords))
             throw new \Exception('File ' . $file . ' not found or empty');
 
         $count = 0;
+        $result_str = '';
 
         foreach (Petroglyph::find()->multilingual()->each() as $petroglyph)
         {
@@ -46,30 +47,26 @@ class CliController extends \yii\console\Controller
                 $actualName = str_replace($area_name . ". ",'',$petroglyph->name);
             }
             $fullName = ($archsite_name ? $archsite_name . ". " : "") . ($area_name ? $area_name . ". " : "") . $actualName;
-            foreach ($fileRecords as $fileRecord)
-            {
-                if($fullName == $fileRecord->name && empty($petroglyph->threeD))
-                {
+            foreach ($fileRecords as $fileRecord) {
+                if ($fullName == $fileRecord->name && empty($petroglyph->threeD)) {
                     $p3d = new PetroglyphThreeD();
                     $p3d->url = "https://3d.nsu.ru/ru/iframe/" . $fileRecord->object_id;
                     $p3d->petroglyph_id = $petroglyph->id;
-                    $p3d->name = is_array($petroglyph->name) ? $petroglyph->name[0]: $petroglyph->name;
-                    $p3d->name_en = is_array($petroglyph->name_en) ? $petroglyph->name_en[0]: $petroglyph->name_en;
+                    $p3d->name = is_array($petroglyph->name) ? $petroglyph->name[0] : $petroglyph->name;
+                    $p3d->name_en = is_array($petroglyph->name_en) ? $petroglyph->name_en[0] : $petroglyph->name_en;
 
-                    if($p3d->save())
-                    {
+                    if ($p3d->save()) {
                         $count++;
-                        print_r($fullName . "...OK\n");
-                    }
-                    else
-                    {
+                        $result_str .= "<p>" . $fullName . "...WRITTEN</p>\n";
+                    } else {
                         file_put_contents('err.txt', json_encode($p3d->errors));
-                        throw new Exception("Can't save record");
+                        $result_str .= "<p>" . $fullName . "...ERROR</p>\n";
+                        $result_str .= "<p>" . print_r($p3d->errors, true) . "</p>";
                     }
                 }
             }
         }
-
-        print_r("Произведено вставок: " . $count . "\n");
+        $result_str .= "<p>Произведено вставок: " . $count . "</p>\n";
+        file_put_contents('fill_result.txt', $result_str);
     }
 }
