@@ -36,12 +36,13 @@ class ArchsiteController extends Controller
             throw new HttpException(404);
         }
         $areas = $archsite->areas;
+        usort($areas, "\\common\\components\\Helper::usortModelsPredicate");
         $numPet = $archsite->petroglyphsWithoutAreaCount;
         if ($filter = Yii::$app->request->get('filter')) {
             $petroglyphs = $archsite->searchPetroglyphsWithoutArea(mb_strtoupper($filter))->all();
         }
         else $petroglyphs = $archsite->petroglyphsWithoutArea;
-
+        usort($petroglyphs, "\\common\\components\\Helper::usortModelsPredicate");
         return $this->render('view', [
             'archsite' => $archsite,
             'petroglyphs' => $petroglyphs,

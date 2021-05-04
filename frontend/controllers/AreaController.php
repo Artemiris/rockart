@@ -20,7 +20,7 @@ class AreaController extends \yii\web\Controller
             $petroglyphs = $area->searchPetroglyphs(mb_strtoupper($filter))->all();
         }
         else $petroglyphs = $area->petroglyphs;
-
+        usort($petroglyphs, "\\common\\components\\Helper::usortModelsPredicate");
         return $this->render('view', [
             'area' => $area,
             'petroglyphs' => $petroglyphs,
