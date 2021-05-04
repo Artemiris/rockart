@@ -195,8 +195,13 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
                         </h4>
                         <?/*= $petroglyph->annotation */?>
                     </a>
+                <?php else: ?>
+                    <a href="<?= Url::to(['petroglyph/view', 'id' => $petroglyph->id]) ?>" class="petroglyph-item" >
+                        <h4>
+                            <?php if (!empty($petroglyph->index)):?><?= $petroglyph->index ?>. <?endif?><?= $petroglyph->name ?>
+                        </h4>
+                    </a>
                 <?php endif; ?>
-
             </div>
         <?php endforeach; ?>
     </div>

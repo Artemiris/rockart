@@ -41,4 +41,25 @@ class BaseController extends Controller
         $model->user_agent = $_SERVER["HTTP_USER_AGENT"];
         $model->save();
     }
+
+    static function usortAreasPredicate($a,$b){
+        $a_name = $a->name;
+        $a_name = preg_replace_callback("/\d+/", "\\frontend\\controllers\\BaseController::addZero", $a_name);
+        $b_name = $b->name;
+        $b_name = preg_replace_callback("/\d+/", "\\frontend\\controllers\\BaseController::addZero", $b_name);
+        return strcmp($a_name, $b_name);
+    }
+
+    static function addZero($matches){
+        $len = strlen($matches[0]);
+        if($len == 1){
+            $res = '00' . $matches[0];
+        } elseif ($len == 2){
+            $res = '0' . $matches[0];
+        } else {
+            $res = $matches[0];
+        }
+
+        return $res;
+    }
 }

@@ -21,6 +21,8 @@ class AreaController extends \yii\web\Controller
         }
         else $petroglyphs = $area->petroglyphs;
 
+        usort($petroglyphs, "\\frontend\\controllers\\BaseController::usortAreasPredicate");
+
         return $this->render('view', [
             'area' => $area,
             'petroglyphs' => $petroglyphs,
