@@ -20,11 +20,17 @@ class AreaController extends \yii\web\Controller
             $petroglyphs = $area->searchPetroglyphs(mb_strtoupper($filter))->all();
         }
         else $petroglyphs = $area->petroglyphs;
-
+        usort($petroglyphs, "\\frontend\\controllers\\AreaController::usortModelsPredicate");
         return $this->render('view', [
             'area' => $area,
             'petroglyphs' => $petroglyphs,
             'filter' => $filter
         ]);
+    }
+
+    static function usortModelsPredicate($a, $b){
+        $a_name = preg_replace(["/(?<!\d)(\d\d)(?!\d)/", "/(?<!\d)(\d)(?!\d)/"], ['0$1','00$1'], $a->name);
+        $b_name = preg_replace(["/(?<!\d)(\d\d)(?!\d)/", "/(?<!\d)(\d)(?!\d)/"], ['0$1','00$1'], $b->name);
+        return strcmp($a_name, $b_name);
     }
 }

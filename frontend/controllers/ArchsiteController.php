@@ -41,7 +41,8 @@ class ArchsiteController extends Controller
             $petroglyphs = $archsite->searchPetroglyphsWithoutArea(mb_strtoupper($filter))->all();
         }
         else $petroglyphs = $archsite->petroglyphsWithoutArea;
-
+        usort($areas, "\\frontend\\controllers\\ArchsiteController::usortModelsPredicate");
+        usort($petroglyphs, "\\frontend\\controllers\\ArchsiteController::usortModelsPredicate");
         return $this->render('view', [
             'archsite' => $archsite,
             'petroglyphs' => $petroglyphs,
@@ -49,5 +50,11 @@ class ArchsiteController extends Controller
             'filter' => $filter,
             'numPet' => $numPet
         ]);
+    }
+
+    static function usortModelsPredicate($a, $b){
+        $a_name = preg_replace(["/(?<!\d)(\d\d)(?!\d)/", "/(?<!\d)(\d)(?!\d)/"], ['0$1','00$1'], $a->name);
+        $b_name = preg_replace(["/(?<!\d)(\d\d)(?!\d)/", "/(?<!\d)(\d)(?!\d)/"], ['0$1','00$1'], $b->name);
+        return strcmp($a_name, $b_name);
     }
 }
