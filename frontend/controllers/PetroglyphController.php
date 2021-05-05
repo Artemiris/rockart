@@ -100,4 +100,30 @@ class PetroglyphController extends BaseController
             'inherit_coords' => $inherit_coords,
         ]);
     }
+
+    public function actionPdfView($id){
+        $petroglyph = Petroglyph::find()->multilingual()->where(['id'=>$id])->one();
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->setAutoTopMargin = true;
+        $mpdf->setAutoBottomMargin = true;
+        $mpdf->SetHTMLHeader('
+            <div style="text-align: right;">
+                ИС "Наскальное искусство Сибири"
+            </div>
+            <hr>'
+        );
+        $mpdf->SetHTMLFooter('
+            <hr>
+            <table width="100%">
+                <tr>
+                    <td width="33%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+                    <td width="33%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
+                </tr>
+            </table>'
+        );
+        $mpdf->WriteHTML($this->renderPartial('pdf_view',['petroglyph'=>$petroglyph]));
+        $mpdf->Output('test.pdf', 'D');
+    }
 }
