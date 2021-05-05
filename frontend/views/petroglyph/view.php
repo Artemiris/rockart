@@ -62,7 +62,23 @@ JS;
 
     $this->registerJs($script, yii\web\View::POS_BEGIN);
 
-    $script = <<< JS
+    if (Yii::$app->user->can('manager')) {
+        $this->registerJsFile('/js/map/jquery.cookie.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+
+        if ($mapProvider == 'yandex') {
+            $this->registerJsFile('https://api-maps.yandex.ru/2.1/?lang=' . (Yii::$app->language == 'ru' ? 'ru_RU' : 'en_US') . '&mode=debug', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+            $this->registerJsFile('/js/map/tiler-converter.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+            $this->registerJsFile('/js/map/map_yandex.js?20200501', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+        } else {
+            $this->registerJsFile('/js/map/markerclusterer/src/markerclusterer.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+            $this->registerJsFile('/js/map/map.js?20200501', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+            $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyCeYhPhJAnwj95GXDg5BRT7Q2dTj303dQU&callback=initMap&language=' . Yii::$app->language, ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
+        }
+    }
+}
+
+
+$script = <<< JS
         
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -92,22 +108,7 @@ JS;
 
 JS;
 
-    $this->registerJs($script, yii\web\View::POS_READY);
-
-    if (Yii::$app->user->can('manager')) {
-        $this->registerJsFile('/js/map/jquery.cookie.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-
-        if ($mapProvider == 'yandex') {
-            $this->registerJsFile('https://api-maps.yandex.ru/2.1/?lang=' . (Yii::$app->language == 'ru' ? 'ru_RU' : 'en_US') . '&mode=debug', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-            $this->registerJsFile('/js/map/tiler-converter.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-            $this->registerJsFile('/js/map/map_yandex.js?20200501', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-        } else {
-            $this->registerJsFile('/js/map/markerclusterer/src/markerclusterer.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-            $this->registerJsFile('/js/map/map.js?20200501', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-            $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyCeYhPhJAnwj95GXDg5BRT7Q2dTj303dQU&callback=initMap&language=' . Yii::$app->language, ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
-        }
-    }
-}
+$this->registerJs($script, yii\web\View::POS_READY);
 ?>
 
 <?= newerton\fancybox\FancyBox::widget([
