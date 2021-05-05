@@ -62,38 +62,6 @@ JS;
 
     $this->registerJs($script, yii\web\View::POS_BEGIN);
 
-    $script = <<< JS
-        
-        $('[data-toggle="tooltip"]').tooltip();
-
-        $(document).ready(function() {
-            $('.f3d').each(function () {
-                let self = $(this);
-                let modelID = self.attr('href').split('/').slice(-1)[0];
-                let domain = self.attr('href').split('/')[2];
-                let modelURL = 'http://' + domain + '/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
-                $.ajax({
-                    url: modelURL,
-                    success: function(data) {
-                        let d = JSON.parse(data);
-                        let aVal = (d.author || '');
-                        let cVal = (d.copyright || '');
-                        let cblock = '';
-                        if(d.author || d.copyright){
-                            if(d.author) cblock += $author + ': ' + aVal;
-                            if(d.author && d.copyright) cblock += '</br>';
-                            if(d.copyright) cblock += $copyright + ': ' + cVal;
-                            self.attr('data-caption',cblock);
-                        }
-                    }
-                });
-            });
-        });
-
-JS;
-
-    $this->registerJs($script, yii\web\View::POS_READY);
-
     if (Yii::$app->user->can('manager')) {
         $this->registerJsFile('/js/map/jquery.cookie.js', ['depends' => ['yii\bootstrap\BootstrapPluginAsset']]);
 
@@ -108,6 +76,39 @@ JS;
         }
     }
 }
+
+
+$script = <<< JS
+        
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(document).ready(function() {
+            $('.f3d').each(function () {
+                let self = $(this);
+                let modelID = self.attr('href').split('/').slice(-1)[0];
+                let domain = self.attr('href').split('/');
+                let modelURL = domain[0] + '//' + domain[2] + '/ru/rest/copyright?id=' + modelID + '&lng=' + $lang;
+                $.ajax({
+                    url: modelURL,
+                    success: function(data) {
+                        let d = JSON.parse(data);
+                        let aVal = (d.author || '');
+                        let cVal = (d.copyright || '');
+                        let cblock = '';
+                        if(d.author || d.copyright){
+                            if(d.author) cblock += $author + ': ' + aVal;
+                            if(d.author && d.copyright) cblock += '</br>';
+                            if(d.copyright) cblock += $copyright + ': ' + cVal;
+                        }
+                        self.attr('data-caption',cblock);
+                    }
+                });
+            });
+        });
+
+JS;
+
+$this->registerJs($script, yii\web\View::POS_READY);
 ?>
 
 <?= newerton\fancybox\FancyBox::widget([
