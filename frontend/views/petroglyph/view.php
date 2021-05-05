@@ -83,8 +83,8 @@ JS;
                             if(d.author) cblock += $author + ': ' + aVal;
                             if(d.author && d.copyright) cblock += '</br>';
                             if(d.copyright) cblock += $copyright + ': ' + cVal;
-                            self.attr('data-caption',cblock);
                         }
+                        self.attr('data-caption',cblock);
                     }
                 });
             });
