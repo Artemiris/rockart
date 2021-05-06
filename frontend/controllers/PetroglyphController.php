@@ -104,27 +104,63 @@ class PetroglyphController extends BaseController
 
     public function actionPdfView($id){
         $petroglyph = Petroglyph::find()->where(['id'=>$id])->one();
+        $petroglyph_image_objects = [];
+        if(!empty($petroglyph->image)){
+            $petroglyph_image_objects[] = [
+                'name' => Yii::t('model', 'Image'),
+                'image' => Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImage
+            ];
+        }
+        if(!empty($petroglyph->im_dstretch)){
+            $petroglyph_image_objects[] = [
+                'name' => Yii::t('model', 'Image DStretch'),
+                'image' => Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDstretch
+            ];
+        }
+        if(!empty($petroglyph->im_drawing)){
+            $petroglyph_image_objects[] = [
+                'name' => Yii::t('model', 'Drawing image'),
+                'image' => Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImDrawing
+            ];
+        }
+        if(!empty($petroglyph->im_overlay)){
+            $petroglyph_image_objects[] = [
+                'name' => Yii::t('model', 'Image overlay'),
+                'image' => Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImOverlay
+            ];
+        }
+        if(!empty($petroglyph->im_reconstruction)){
+            $petroglyph_image_objects[] = [
+                'name' => Yii::t('model', 'Reconstruction image'),
+                'image' => Petroglyph::SRC_IMAGE . '/' . $petroglyph->thumbnailImReconstr
+            ];
+        }
 
         $mpdf = new \Mpdf\Mpdf();
-        $mpdf->setAutoTopMargin = true;
-        $mpdf->setAutoBottomMargin = true;
+        $mpdf->setAutoTopMargin = 'stretch';
+        $mpdf->setAutoBottomMargin = 'stretch';
         $mpdf->SetHTMLHeader('
-            <div style="text-align: right;">
-                ИС "Наскальное искусство Сибири"
-            </div>
+            <div style="text-align: right;">' .
+                Yii::t('app', 'IS Rock art of Siberia') .
+            '</div>
             <hr>'
         );
         $mpdf->SetHTMLFooter('
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="33%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . ' ' . HTML::a('www.rockart.artemiris.org', 'http://rockart.artemiris.org/') . '</td>
-                    <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-                    <td width="33%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
+                    <td width="40%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="20%" align="center">{PAGENO}/{nbpg}</td>
+                    <td width="40%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
+                </tr>
+                <tr>
+                    <td width="40%">' . HTML::a('www.rockart.artemiris.org', 'http://rockart.artemiris.org/') . '</td>
+                    <td width="20%" align="center"></td>
+                    <td width="40%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
                 </tr>
             </table>'
         );
-        $mpdf->WriteHTML($this->renderPartial('pdf_view',['petroglyph'=>$petroglyph]));
+        $mpdf->WriteHTML($this->renderPartial('pdf_view',['petroglyph'=>$petroglyph, 'image_objects' => $petroglyph_image_objects]));
         $mpdf->Output('test.pdf', 'D');
     }
 }
