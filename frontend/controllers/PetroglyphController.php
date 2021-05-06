@@ -5,6 +5,7 @@ use common\models\Petroglyph;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -102,7 +103,7 @@ class PetroglyphController extends BaseController
     }
 
     public function actionPdfView($id){
-        $petroglyph = Petroglyph::find()->multilingual()->where(['id'=>$id])->one();
+        $petroglyph = Petroglyph::find()->where(['id'=>$id])->one();
 
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->setAutoTopMargin = true;
@@ -117,7 +118,7 @@ class PetroglyphController extends BaseController
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="33%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="33%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . ' ' . HTML::a('www.rockart.artemiris.org', 'http://rockart.artemiris.org/') . '</td>
                     <td width="33%" align="center">{PAGENO}/{nbpg}</td>
                     <td width="33%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
                 </tr>
