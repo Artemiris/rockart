@@ -102,7 +102,7 @@ class PetroglyphController extends BaseController
         $areaName = $p->area_id == null ? null : \common\models\Area::find()->where(['id'=>$p->area_id])->one()->name;
         $archsiteName = Archsite::find()->where(['id'=>$p->archsite_id])->one()->name;
         $parentName = $archsiteName . '. ' . (empty($areaName) ? '' : ($areaName . '. '));
-        $mpdf = new \Mpdf\Mpdf();
+        $mpdf = new \Mpdf\Mpdf(['format'=>'A4']);
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
         $mpdf->SetHTMLHeader('
