@@ -66,8 +66,6 @@ class ArchsiteController extends Controller
         $withoutArea = $archsite->petroglyphsWithoutArea;
         usort($areas, "\\frontend\\controllers\\ArchsiteController::usortModelsPredicate");
         usort($withoutArea, "\\frontend\\controllers\\ArchsiteController::usortModelsPredicate");
-        $areas = array_reverse($areas);
-        $withoutArea = array_reverse($withoutArea);
 
         $mpdf = new \Mpdf\Mpdf(['format'=>'A4']);
         $mpdf->setAutoTopMargin = 'stretch';
@@ -95,35 +93,10 @@ class ArchsiteController extends Controller
             </table>'
         );
         $mpdf->WriteHTML($this->renderPartial('pdf_view',['archsite'=>$archsite]));
-        foreach ($withoutArea as $p) {
-            $pdf_object = PetroglyphPdfUtil::GetPetroglyphPdfObject($p);
-            $mpdf->AddPage();
-            $mpdf->SetHTMLFooter('
-            <hr>
-            <table width="100%">
-                <tr>
-                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
-                    <td width="10%" align="center">{PAGENO}</td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
-                </tr>
-                <tr>
-                    <td width="45%">' . HTML::a('rockart.artemiris.org/petroglyph/' . $pdf_object['petroglyph']->id,
-                    'http://rockart.artemiris.org/' . Yii::$app->language . '/petroglyph/' . $pdf_object['petroglyph']->id) . '</td>
-                    <td width="10%" align="center"></td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
-                </tr>
-            </table>'
-            );
 
-            $mpdf->WriteHTML($this->renderPartial('petroglyph_pdf_view', [
-                'petroglyph' => $pdf_object['petroglyph'],
-                'image_objects' => $pdf_object['petroglyph_image_objects'],
-                'attrib_objects' => $pdf_object['petroglyph_attribute_objects'],
-                'parentName' => $archsite->name . '. '
-            ]));
-        }
         foreach ($areas as $area){
             $petroglyphs = $area->petroglyphs;
+            usort($petroglyphs, "\\frontend\\controllers\\ArchsiteController::usortModelsPredicate");
             $mpdf->AddPage();
             $mpdf->SetHTMLFooter('
             <hr>
@@ -170,6 +143,34 @@ class ArchsiteController extends Controller
                     'parentName' => $archsite->name . '. ' . $area->name . '. '
                 ]));
             }
+        }
+
+        foreach ($withoutArea as $p) {
+            $pdf_object = PetroglyphPdfUtil::GetPetroglyphPdfObject($p);
+            $mpdf->AddPage();
+            $mpdf->SetHTMLFooter('
+            <hr>
+            <table width="100%">
+                <tr>
+                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="10%" align="center">{PAGENO}</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
+                </tr>
+                <tr>
+                    <td width="45%">' . HTML::a('rockart.artemiris.org/petroglyph/' . $pdf_object['petroglyph']->id,
+                    'http://rockart.artemiris.org/' . Yii::$app->language . '/petroglyph/' . $pdf_object['petroglyph']->id) . '</td>
+                    <td width="10%" align="center"></td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                </tr>
+            </table>'
+            );
+
+            $mpdf->WriteHTML($this->renderPartial('petroglyph_pdf_view', [
+                'petroglyph' => $pdf_object['petroglyph'],
+                'image_objects' => $pdf_object['petroglyph_image_objects'],
+                'attrib_objects' => $pdf_object['petroglyph_attribute_objects'],
+                'parentName' => $archsite->name . '. '
+            ]));
         }
 
         $mpdf->Output($archsite->name . '.pdf', 'D');

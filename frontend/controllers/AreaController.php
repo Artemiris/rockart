@@ -38,6 +38,7 @@ class AreaController extends \yii\web\Controller
             throw new HttpException(404);
         }
         usort($petroglyphs, "\\frontend\\controllers\\AreaController::usortModelsPredicate");
+        $petroglyphs = array_reverse($petroglyphs);
         $archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name;
         $mpdf = new \Mpdf\Mpdf(['format'=>'A4']);
         $mpdf->setAutoTopMargin = 'stretch';
