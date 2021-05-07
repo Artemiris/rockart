@@ -1,5 +1,6 @@
 <?php
 /* @var $area Area */
+/* @var $archsiteName string*/
 
 use common\models\Archsite;
 use common\models\Area;
@@ -7,7 +8,7 @@ use yii\helpers\Html;
 
 ?>
 
-<h1><?= $archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name . '. ' . $area->name ?></h1>
+<h1><?= $archsiteName . '. ' . $area->name ?></h1>
 
 <?php if (!empty($area->image)): ?>
     <?=Html::img(Area::SRC_IMAGE . '/' . $area->thumbnailImage)?>

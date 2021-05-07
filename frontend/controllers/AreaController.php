@@ -3,6 +3,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Archsite;
 use common\models\Area;
 use common\utility\PetroglyphPdfUtil;
 use Yii;
@@ -37,7 +38,7 @@ class AreaController extends \yii\web\Controller
             throw new HttpException(404);
         }
         usort($petroglyphs, "\\frontend\\controllers\\AreaController::usortModelsPredicate");
-
+        $archsiteName = Archsite::find()->where(['id'=>$area->archsite_id])->one()->name;
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
@@ -63,7 +64,7 @@ class AreaController extends \yii\web\Controller
                 </tr>
             </table>'
         );
-        $mpdf->WriteHTML($this->renderPartial('pdf_view',['area'=>$area]));
+        $mpdf->WriteHTML($this->renderPartial('pdf_view',['area'=>$area, 'archsiteName'=>$archsiteName]));
 
         foreach ($petroglyphs as $petroglyph){
             $pdf_object = PetroglyphPdfUtil::GetPetroglyphPdfObject($petroglyph);
@@ -88,11 +89,12 @@ class AreaController extends \yii\web\Controller
             $mpdf->WriteHTML($this->renderPartial('petroglyph_pdf_view', [
                 'petroglyph'=>$pdf_object['petroglyph'],
                 'image_objects' => $pdf_object['petroglyph_image_objects'],
-                'attrib_objects' => $pdf_object['petroglyph_attribute_objects']
+                'attrib_objects' => $pdf_object['petroglyph_attribute_objects'],
+                'parentName' => $archsiteName . '. ' . $area->name . '. '
             ]));
         }
 
-        $mpdf->Output($area->name . '.pdf', 'D');
+        $mpdf->Output($archsiteName . '. ' . $area->name . '.pdf', 'D');
     }
 
     static function usortModelsPredicate($a, $b){

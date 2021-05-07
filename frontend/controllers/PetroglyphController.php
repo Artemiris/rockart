@@ -1,6 +1,8 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Archsite;
+use common\models\Area;
 use common\models\Petroglyph;
 use common\utility\PetroglyphPdfUtil;
 use Yii;
@@ -97,7 +99,9 @@ class PetroglyphController extends BaseController
     public function actionPdfView($id){
         $p = Petroglyph::find()->where(['id'=>$id])->one();
         $petroglyph_pdf = PetroglyphPdfUtil::GetPetroglyphPdfObject($p);
-
+        $areaName = $p->area_id == null ? null : \common\models\Area::find()->where(['id'=>$p->area_id])->one()->name;
+        $archsiteName = Archsite::find()->where(['id'=>$p->archsite_id])->one()->name;
+        $parentName = $archsiteName . '. ' . (empty($areaName) ? '' : ($areaName . '. '));
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->setAutoTopMargin = 'stretch';
         $mpdf->setAutoBottomMargin = 'stretch';
@@ -126,8 +130,9 @@ class PetroglyphController extends BaseController
         $mpdf->WriteHTML($this->renderPartial('pdf_view', [
             'petroglyph'=>$petroglyph_pdf['petroglyph'],
             'image_objects' => $petroglyph_pdf['petroglyph_image_objects'],
-            'attrib_objects' => $petroglyph_pdf['petroglyph_attribute_objects']
+            'attrib_objects' => $petroglyph_pdf['petroglyph_attribute_objects'],
+            'parentName' => $parentName
         ]));
-        $mpdf->Output($petroglyph_pdf['petroglyph']->name . '.pdf', 'D');
+        $mpdf->Output($parentName . $petroglyph_pdf['petroglyph']->name . '.pdf', 'D');
     }
 }

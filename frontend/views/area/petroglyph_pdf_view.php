@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $petroglyph Petroglyph */
 /* @var $image_objects Array */
 /* @var $attrib_objects Array */
+/* @var $parentName string */
 
 ?>
 
@@ -14,6 +15,9 @@ use yii\helpers\Html;
         }
         .td_cult{
             width: 50%;
+        }
+        .tb_out{
+            padding-left: -1mm;
         }
         .td_a{
             font-size: 8pt;
@@ -29,7 +33,7 @@ use yii\helpers\Html;
         }
     </style>
     <h1>
-        <?= $petroglyph->name ?>
+        <?= empty($parentName) ? $petroglyph->name : $parentName . $petroglyph->name ?>
     </h1>
 
 <?php if (!empty($petroglyph->index)): ?>
@@ -52,24 +56,24 @@ use yii\helpers\Html;
                     <table class="tb_img">
                         <tr>
                             <?php $image_object = array_shift($image_objects)?>
-                            <td class="td_img_block">
+                            <td class="td_img_block tb_out">
                                 <table autosize="1">
                                     <tr>
-                                        <td>
+                                        <td class="tb_out">
                                             <span style="font-size: 12pt; font-weight: bold"><?= $image_object ? $image_object['name'] : '' ?></span>
                                         </td>
                                     </tr>
                                 </table>
                                 <table autosize="1">
                                     <tr>
-                                        <td>
+                                        <td class="tb_out">
                                             <?= $image_object ? Html::img($image_object['image'],['class'=>'t_img']) : '' ?>
                                         </td>
                                     </tr>
                                 </table>
                                 <table autosize="1">
                                     <tr>
-                                        <td class="td_a">
+                                        <td class="td_a tb_out">
                                             <?= $image_object && $image_object['author'] ? Yii::t('model','Image authors') . ': ' . $image_object['author'] . '<br>' : '' ?>
                                             <?= $image_object && $image_object['copyright'] ? Yii::t('model','Image copyright') . ': ' . $image_object['copyright'] . '<br>' : '' ?>
                                             <?= $image_object && $image_object['source'] ? Yii::t('model','Image source') . ': ' . $image_object['source'] : '' ?>
@@ -113,24 +117,24 @@ use yii\helpers\Html;
 <?php $line_cnt = intdiv((count($attrib_objects) + 1), 2); ?>
 <?php if($line_cnt > 0): ?>
     <br>
-    <table>
+    <table class="tb_img">
         <tr>
             <td>
                 <?php for ($i = 0; $i < $line_cnt; $i++):?>
                     <table class="tb_img">
                         <tr>
                             <?php $attrib_object = array_shift($attrib_objects)?>
-                            <td class="td_img_block">
+                            <td class="td_img_block tb_out">
                                 <table autosize="1">
                                     <tr>
-                                        <td>
+                                        <td class="tb_out">
                                             <span style="font-size: 12pt; font-weight: bold"><?= $attrib_object ? $attrib_object['name'] : '' ?></span>
                                         </td>
                                     </tr>
                                 </table>
                                 <table autosize="1">
                                     <tr>
-                                        <td>
+                                        <td class="tb_out">
                                             <?= $attrib_object ? $attrib_object['data'] : '' ?>
                                         </td>
                                     </tr>
