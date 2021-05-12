@@ -36,5 +36,3 @@ phpunit.phar
 
 # scss cache
 frontend/web/css/.sass-cache
-
-vendor/
