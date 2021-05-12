@@ -46,7 +46,10 @@ use yii\helpers\Html;
     <h1>
         <?= empty($parentName) ? $petroglyph->name : $parentName . $petroglyph->name ?>
     </h1>
-
+<?php if(!empty($image_objects)):?>
+<?php $image_main = array_shift($image_objects) ?>
+<?= Html::img($image_main['image']) ?>
+<?php endif; ?>
 <?php if (!empty($petroglyph->index)): ?>
     <h3><?= Yii::t('app', 'Index') . ': ' . $petroglyph->index ?></h3>
 <?php endif; ?>
