@@ -27,7 +27,8 @@
         "yiisoft/yii2-imagine": "*",
         "rmrevin/yii2-fontawesome": "~3.3",
         "fgh151/yii2-opengraph": "*",
-        "thamtech/yii2-uuid": "*"
+        "thamtech/yii2-uuid": "*",
+        "mpdf/mpdf": "^8.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

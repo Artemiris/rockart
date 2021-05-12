@@ -1208,4 +1208,12 @@ class ManagerController extends Controller
             'archsites'=>$archsites
         ]);
     }
+
+    public function actionPdf($id){
+        $petroglyph = Petroglyph::findOne(['id'=>$id]);
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML('<title>Привет мир!</title>');
+        $mpdf->Output('test.pdf', 'D');
+    }
 }

@@ -268,6 +268,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
 
     </div>
     <div class="col-xs-12 col-sm-6 col-md-6">
+        <?= Html::a('PDF', ['petroglyph/pdf-view', 'id' => $petroglyph->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php if (Yii::$app->user->can('manager')): ?>
         <?= Html::a(Yii::t('app', 'Edit'), ['manager/petroglyph-update', 'id' => $petroglyph->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php endif; ?>

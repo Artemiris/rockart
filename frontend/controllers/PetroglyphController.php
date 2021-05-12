@@ -1,18 +1,13 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Archsite;
+use common\models\Area;
 use common\models\Petroglyph;
+use common\utility\PetroglyphPdfUtil;
 use Yii;
-use yii\base\InvalidParamException;
 use yii\data\ActiveDataProvider;
-use yii\web\BadRequestHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use yii\helpers\Html;
 use yii\web\HttpException;
 
 /**
@@ -99,5 +94,45 @@ class PetroglyphController extends BaseController
             'mapProvider' => $mapProvider,
             'inherit_coords' => $inherit_coords,
         ]);
+    }
+
+    public function actionPdfView($id){
+        $p = Petroglyph::find()->where(['id'=>$id])->one();
+        $petroglyph_pdf = PetroglyphPdfUtil::GetPetroglyphPdfObject($p);
+        $areaName = $p->area_id == null ? null : \common\models\Area::find()->where(['id'=>$p->area_id])->one()->name;
+        $archsiteName = Archsite::find()->where(['id'=>$p->archsite_id])->one()->name;
+        $parentName = $archsiteName . '. ' . (empty($areaName) ? '' : ($areaName . '. '));
+        $mpdf = new \Mpdf\Mpdf(['format'=>'A4']);
+        $mpdf->setAutoTopMargin = 'stretch';
+        $mpdf->setAutoBottomMargin = 'stretch';
+        $mpdf->SetHTMLHeader('
+            <div style="text-align: right;">' .
+                Yii::t('app', 'IS Rock art of Siberia') .
+            '</div>
+            <hr>'
+        );
+        $mpdf->SetHTMLFooter('
+            <hr>
+            <table width="100%">
+                <tr>
+                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="10%" align="center">{PAGENO}</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
+                </tr>
+                <tr>
+                    <td width="45%">' . HTML::a('rockart.artemiris.org/petroglyph/' . $id,
+                                                'http://rockart.artemiris.org/' . Yii::$app->language . '/petroglyph/' . $id) . '</td>
+                    <td width="10%" align="center"></td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                </tr>
+            </table>'
+        );
+        $mpdf->WriteHTML($this->renderPartial('pdf_view', [
+            'petroglyph'=>$petroglyph_pdf['petroglyph'],
+            'image_objects' => $petroglyph_pdf['petroglyph_image_objects'],
+            'attrib_objects' => $petroglyph_pdf['petroglyph_attribute_objects'],
+            'parentName' => $parentName
+        ]));
+        $mpdf->Output($parentName . $petroglyph_pdf['petroglyph']->name . '.pdf', 'D');
     }
 }

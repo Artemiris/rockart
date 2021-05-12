@@ -122,6 +122,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
 ]) ?>
 
 <?php if (empty($area->image)): ?>
+    <?= Html::a('PDF', ['area/pdf-view', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php if (Yii::$app->user->can('manager')): ?>
         <?= Html::a(Yii::t('app', 'Edit'), ['manager/area-update', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php endif; ?>
@@ -135,6 +136,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
             'rel' => 'findImages'
         ]); ?>
     </div>
+    <?= Html::a('PDF', ['area/pdf-view', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php if (Yii::$app->user->can('manager')): ?>
         <?= Html::a(Yii::t('app', 'Edit'), ['manager/area-update', 'id' => $area->id], ['class' => 'btn btn-primary pull-right']) ?>
     <?php endif; ?>
