@@ -110,9 +110,9 @@ AppAsset::register($this);
             &copy;
             <a href="https://www.nsu.ru/n/" target="_blank"><?= Yii::t('app', 'Novosibirsk State University') ?></a>
             ↦
-            <a href="http://artemir.nsu.ru/" target="_blank"><?= Yii::t('app', 'Lab "LIA ARTEMIR"') ?></a>
+            <a href="http://artemir.nsu.ru/" target="_blank"><?= Yii::t('app', 'Prehistoric Art in Eurasia Lab') ?></a>
         </p>
-        <p><?= Yii::t('app', 'Project supported by RNF #18-78-10079') ?> </p>
+        <p><?= Yii::t('app', 'Project supported by RSF #18-78-10079') ?> </p>
     </div>
 </footer>
 

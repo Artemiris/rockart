@@ -80,7 +80,7 @@ class ArchsiteController extends Controller
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="45%">' . Yii::t('app', 'Prehistoric Art in Eurasia Lab') . '</td>
                     <td width="10%" align="center">{PAGENO}</td>
                     <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
                 </tr>
@@ -88,7 +88,7 @@ class ArchsiteController extends Controller
                     <td width="45%">' . HTML::a('rockart.artemiris.org/archsite/' . $id,
                 'http://rockart.artemiris.org/' . Yii::$app->language . '/archsite/' . $id) . '</td>
                     <td width="10%" align="center"></td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RSF #18-78-10079') . '</td>
                 </tr>
             </table>'
         );
@@ -102,7 +102,7 @@ class ArchsiteController extends Controller
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="45%">' . Yii::t('app', 'Prehistoric Art in Eurasia Lab') . '</td>
                     <td width="10%" align="center">{PAGENO}</td>
                     <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
                 </tr>
@@ -110,7 +110,7 @@ class ArchsiteController extends Controller
                     <td width="45%">' . HTML::a('rockart.artemiris.org/area/' . $area->id,
                     'http://rockart.artemiris.org/' . Yii::$app->language . '/area/' . $area->id) . '</td>
                     <td width="10%" align="center"></td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RSF #18-78-10079') . '</td>
                 </tr>
             </table>'
             );
@@ -123,7 +123,7 @@ class ArchsiteController extends Controller
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="45%">' . Yii::t('app', 'Prehistoric Art in Eurasia Lab') . '</td>
                     <td width="10%" align="center">{PAGENO}</td>
                     <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
                 </tr>
@@ -131,7 +131,7 @@ class ArchsiteController extends Controller
                     <td width="45%">' . HTML::a('rockart.artemiris.org/petroglyph/' . $pdf_object['petroglyph']->id,
                         'http://rockart.artemiris.org/' . Yii::$app->language . '/petroglyph/' . $pdf_object['petroglyph']->id) . '</td>
                     <td width="10%" align="center"></td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RSF #18-78-10079') . '</td>
                 </tr>
             </table>'
                 );
@@ -152,7 +152,7 @@ class ArchsiteController extends Controller
             <hr>
             <table width="100%">
                 <tr>
-                    <td width="45%">' . Yii::t('app', 'Lab "LIA ARTEMIR"') . '</td>
+                    <td width="45%">' . Yii::t('app', 'Prehistoric Art in Eurasia Lab') . '</td>
                     <td width="10%" align="center">{PAGENO}</td>
                     <td width="45%" style="text-align: right;">' . Yii::t('app', 'Novosibirsk State University') . '</td>
                 </tr>
@@ -160,7 +160,7 @@ class ArchsiteController extends Controller
                     <td width="45%">' . HTML::a('rockart.artemiris.org/petroglyph/' . $pdf_object['petroglyph']->id,
                     'http://rockart.artemiris.org/' . Yii::$app->language . '/petroglyph/' . $pdf_object['petroglyph']->id) . '</td>
                     <td width="10%" align="center"></td>
-                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RNF #18-78-10079') . '</td>
+                    <td width="45%" style="text-align: right;">' . Yii::t('app', 'Project supported by RSF #18-78-10079') . '</td>
                 </tr>
             </table>'
             );
