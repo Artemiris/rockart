@@ -41,6 +41,11 @@ class ManagerController extends Controller
                         'allow' => true,
                         'roles' => ['manager'],
                     ],
+                    [                    //разрешить неавторизованым доступ к actionView, иначе yii кинет на логинку не дойдя до редиректа
+                        'allow' => true, //да, это грязь, но разбираться с парсингом роутов долго
+                        'roles' => ['?'],
+                        'actions' => ['view']
+                    ]
                 ],
             ],
             'verbs' => [
@@ -62,6 +67,11 @@ class ManagerController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionView($id) // хак, ибо yii при передаче параметра в менеджер всегда ищет manager/view
+    {
+        $this->redirect(['archsite/view','id'=>$id], 307);
     }
 
     /**
