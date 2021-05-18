@@ -1,6 +1,9 @@
 Options FollowSymLinks
 AddDefaultCharset utf-8
 
+Redirect 302 /manager/12 /archsite/12
+Redirect 302 /ru/manager/12 /archsite/12
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
