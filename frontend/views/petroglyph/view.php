@@ -171,7 +171,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
             . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->img_source : "") . '</p>'?>
         </div>
         </div>
-    <?endif;?>
+    <?php endif; ?>
     
     <?php if (!empty($petroglyph->im_dstretch)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
@@ -192,7 +192,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->ds_img_source : ""),
             ]); ?>
         </div>
-    <?endif;?>
+    <?php endif; ?>
     <?php if (!empty($petroglyph->im_drawing)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
             <?php
@@ -212,7 +212,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->dr_img_source : ""),
             ]); ?>
         </div>
-    <?endif;?>
+    <?php endif; ?>
     <?php if (!empty($petroglyph->im_reconstruction)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
             <?php
@@ -232,7 +232,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->re_img_source : ""),
             ]); ?>
         </div>
-    <?endif;?>
+    <?php endif; ?>
     <?php if (!empty($petroglyph->im_overlay)): ?>
         <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 image">
             <?php
@@ -252,7 +252,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     . ($isourceset ? "<br>" . $isource . ": " . $petroglyph->ov_img_source : ""),
             ]); ?>
         </div>
-    <?endif;?>
+    <?php endif; ?>
 
     <?php if (!empty($petroglyph->images)): ?>
         <?php foreach ($petroglyph->images as $item): ?>
