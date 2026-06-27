@@ -51,7 +51,7 @@ class CliController extends \yii\console\Controller
                 if($fullName == $fileRecord->name && empty($petroglyph->threeD))
                 {
                     $p3d = new PetroglyphThreeD();
-                    $p3d->url = "https://3d.nsu.ru/ru/iframe/" . $fileRecord->object_id;
+                    $p3d->url = "https://3d.artemiris.org/ru/iframe/" . $fileRecord->object_id;
                     $p3d->petroglyph_id = $petroglyph->id;
                     $p3d->name = is_array($petroglyph->name) ? $petroglyph->name[0]: $petroglyph->name;
                     $p3d->name_en = is_array($petroglyph->name_en) ? $petroglyph->name_en[0]: $petroglyph->name_en;

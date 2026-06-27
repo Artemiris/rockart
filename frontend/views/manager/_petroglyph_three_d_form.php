@@ -36,7 +36,7 @@ $this->registerJs($script, View::POS_READY);
             <div id="instruction-3d" class="collapse">
                 <ol>
                     <li>
-                        На сайте <a href="https://3d.nsu.ru" target="_blank">3d.nsu.ru</a> находим нужную модель
+                        На сайте <a href="https://3d.artemiris.org" target="_blank">3d.artemiris.org</a> находим нужную модель
                     </li>
                     <li>
                         После загрузки модели жмем на кнопку настройки <img src="/img/3d-setting.png">
