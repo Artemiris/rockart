@@ -133,6 +133,11 @@ class PetroglyphController extends BaseController
             'attrib_objects' => $petroglyph_pdf['petroglyph_attribute_objects'],
             'parentName' => $parentName
         ]));
-        $mpdf->Output($parentName . $petroglyph_pdf['petroglyph']->name . '.pdf', 'D');
+        $filename = $parentName . $petroglyph_pdf['petroglyph']->name . '.pdf';
+        $pdfContent = $mpdf->Output('', 'S');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->set('Content-Type', 'application/pdf');
+        Yii::$app->response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        return $pdfContent;
     }
 }

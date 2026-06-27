@@ -193,7 +193,7 @@ $this->registerCssFile('css/petroglyph.css', ['depends' => ['yii\bootstrap\Boots
                         </div>
 
                         <h4>
-                            <?php if (!empty($petroglyph->index)):?><?= $petroglyph->index ?>. <?php endif; ?><?= $petroglyph->name ?>
+                            <?php if (!empty($petroglyph->index)):?><?= $petroglyph->index ?>. <?endif?><?= $petroglyph->name ?>
                         </h4>
                         <?/*= $petroglyph->annotation */?>
                     </a>

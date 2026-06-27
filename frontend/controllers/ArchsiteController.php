@@ -173,7 +173,11 @@ class ArchsiteController extends Controller
             ]));
         }
 
-        $mpdf->Output($archsite->name . '.pdf', 'D');
+        $pdfContent = $mpdf->Output('', 'S');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->set('Content-Type', 'application/pdf');
+        Yii::$app->response->headers->set('Content-Disposition', 'attachment; filename="' . $archsite->name . '.pdf"');
+        return $pdfContent;
     }
 
     static function usortModelsPredicate($a, $b){

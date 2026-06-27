@@ -95,7 +95,12 @@ class AreaController extends \yii\web\Controller
             ]));
         }
 
-        $mpdf->Output($archsiteName . '. ' . $area->name . '.pdf', 'D');
+        $filename = $archsiteName . '. ' . $area->name . '.pdf';
+        $pdfContent = $mpdf->Output('', 'S');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->set('Content-Type', 'application/pdf');
+        Yii::$app->response->headers->set('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        return $pdfContent;
     }
 
     static function usortModelsPredicate($a, $b){

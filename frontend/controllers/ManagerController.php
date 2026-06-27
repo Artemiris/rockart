@@ -1214,6 +1214,10 @@ class ManagerController extends Controller
 
         $mpdf = new \Mpdf\Mpdf();
         $mpdf->WriteHTML('<title>Привет мир!</title>');
-        $mpdf->Output('test.pdf', 'D');
+        $pdfContent = $mpdf->Output('', 'S');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->set('Content-Type', 'application/pdf');
+        Yii::$app->response->headers->set('Content-Disposition', 'attachment; filename="test.pdf"');
+        return $pdfContent;
     }
 }
