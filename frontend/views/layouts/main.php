@@ -104,6 +104,7 @@ AppAsset::register($this);
     </div>
 </div>
 
+<?php /* FOOTER DISABLED — аффилиация НГУ/ЛМИПИЕ/РНФ №18-78-10079 устарела; раскомментируйте когда появится новая
 <footer class="footer">
     <div class="container">
         <p>
@@ -115,6 +116,7 @@ AppAsset::register($this);
         <p><?= Yii::t('app', 'Project supported by RSF #18-78-10079') ?> </p>
     </div>
 </footer>
+*/ ?>
 
 <?= $this->render('_counter') ?>
 
